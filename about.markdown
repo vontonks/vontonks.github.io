@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-fuck you
+You know me. I don't need to <em>explain</em> myself.

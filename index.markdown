@@ -5,4 +5,9 @@
 layout: default
 title: Home
 ---
-<h1>Hello?</h1>
+
+<h1>Hi Sama!</h1>
+<p>Welcome to my very own SITE here on the WORLD WIDE WEB<br>
+(it cost nothing for me to host this lol).
+
+</p>
