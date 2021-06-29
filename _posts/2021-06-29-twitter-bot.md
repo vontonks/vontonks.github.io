@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "CaseBot9000 update 1"
-date:   2021-06-29 10:24:00 +1000
+date:   2021-06-29 22:43:00 +1000
 categories: twitter bot
 my_number: 69
 author: Case Tonkin
