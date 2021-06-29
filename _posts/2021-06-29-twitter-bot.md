@@ -36,3 +36,9 @@ Why not automate it?
 I dunno. That's the basic idea. I've been meaning to kind of write down what the point of all this is and I'm sure there's something else there. Best metaphor I have for now is just that it's the 'heartbeat'.
 
 It's the vibe, man.
+
+So what else? Thinking possibly it's not worth leaving my bulky PC on constantly to do this crap so might be a good use-case for a Raspberry Pi to have sitting around doing various Twitter things as the bot gets going. 
+
+Tomorrow's task should be getting my lists in order so I don't just have the same thing sitting there stinking up the place. I look forward to getting back and fiddling around.
+
+Actually I've also got an appointment to get my heart scanned because of high blood pressure or whatever so there's that, too. Good luck, me!
