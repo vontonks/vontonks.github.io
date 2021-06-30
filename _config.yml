@@ -28,15 +28,15 @@ twitter_username: vontonks
 github_username:  vontonks
 
 collections:
-  authors:
+  categories:
     output: true
 
 defaults:
   - scope:
       path: ""
-      type: "authors"
+      type: "categories"
     values:
-      layout: "author"
+      layout: "categories"
   - scope:
       path: ""
       type: "posts"

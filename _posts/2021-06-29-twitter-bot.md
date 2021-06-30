@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "CaseBot9000 update 1"
+title:  "Twitter bot update 1"
 date:   2021-06-29 22:43:00 +1000
-categories: twitter bot
+categories: [twitter bot, blog] 
 my_number: 69
 author: Case Tonkin
 ---
@@ -13,7 +13,7 @@ Good night overall, really. We had some dinner and a good conversation, Sama and
 
 After that I got cracking back onto the Twitter bot.
 
-<b>The CaseBOT 9000</b>
+<strong>The CaseBOT 9000</strong>
 
 Tonight's task was to get my bot automatically liking and retweeting things.
 
@@ -29,7 +29,7 @@ Before tonight I had been able to pull the Tweet ID from the first tweet in a li
 
 I've really spent the last hour or so working out the if/and function thing for deciding if it's work time or not and getting the delay sorted. Looks like it's working just fine now. I've got a terminal open with the script running and it tells me the time of interaction, the function -- work or not work -- the tweet text, and when the next interaction will happen.
 
-<b>Heartbeat</b>
+<strong>Heartbeat</strong>
 
 The whole idea for this thing is to create a heartbeat for my Twitter presence. A heartbeat is something you don't actively control -- it just <em>happens</em>.
 
@@ -43,7 +43,7 @@ It's the vibe, man.
 
 So what else? Thinking possibly it's not worth leaving my bulky PC on constantly to do this crap so might be a good use-case for a Raspberry Pi to have sitting around doing various Twitter things as the bot gets going. 
 
-<b>Tomorrow</b>
+<strong>Tomorrow</strong>
 
 Tomorrow's task should be getting my lists in order so I don't just have the same thing sitting there stinking up the place. I look forward to getting back and fiddling around.
 

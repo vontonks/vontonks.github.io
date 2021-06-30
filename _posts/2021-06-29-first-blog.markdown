@@ -2,7 +2,7 @@
 layout: post
 title:  "First blog"
 date:   2021-06-29 15:40:00 +1000
-categories: jekyll update
+categories: blog
 my_number: 69
 author: Case Tonkin
 ---
