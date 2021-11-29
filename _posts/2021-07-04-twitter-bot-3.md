@@ -15,6 +15,7 @@ I'm thinking that, over its life, we'll around with that quite a bit and maybe e
 It'll be like a tone thing. And I will be able to tune it to certain settings, playing around it all the while. Using Twitter as an instrument.
 
 <strong>Records</strong>
+<br>
 On a side note. A neighbour who lives a few doors down stopped to say hello earlier today while Sama and I were transplanting a few eucalypts growing in the gaps of our cementing. He invited us around to take a chunk of a frangipani that he'd just chopped up out the back. 
 
 He invited us in for a beer and a toke and he took us up to his loft where there's a nice pair of big speakers and comfy chairs and we sat around talking about his life and the world and all that good stuff.
