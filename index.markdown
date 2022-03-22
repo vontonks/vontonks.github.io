@@ -6,8 +6,16 @@ layout: default
 title: Home
 ---
 
-<h1>Hi Sama!</h1>
-<p>Welcome to my very own SITE here on the WORLD WIDE WEB<br>
+<h1>BLOG</h1>
+
+Welcome to my very own SITE here on the WORLD WIDE WEB
+
 (it cost nothing for me to host this lol).
 
-</p>
+Um so this is the front page of the blog I guess.
+
+Click on that there Blog button up on the top right to see a page with blogs arranged chronologically.
+
+This link also works: https://vontonks.github.io/blog.html
+
+Don't think the categories thing is working though so that's something to consider...
