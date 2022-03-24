@@ -2,7 +2,7 @@
 layout: post
 title:  "Twitter bot update 1"
 date:   2021-06-29 22:43:00 +1000
-categories: [twitter bot, blog] 
+categories: [blog, twitter-bot] 
 my_number: 69
 author: Case Tonkin
 ---
