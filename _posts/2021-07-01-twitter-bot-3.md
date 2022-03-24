@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Twitter bot update 3"
+title:  "Twitter bot 3"
 date:   2021-07-01 14:34:00 +1000
-categories: [twitter-bot, blog]
+categories: [blog, twitter-bot]
 author: Case Tonkin
 ---
 
