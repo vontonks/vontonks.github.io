@@ -3,7 +3,7 @@ layout: post
 title: "Twitter bot update 3"
 date: 2021-07-04 17:00:00 +1000
 author: Case Tonkin
-categories: [twitter bot, blog]
+categories: [twitter-bot, blog]
 ---
 
 Sentiment analysis was like way easier to plug in than I'd expected. So much of this work has been done for me that it's really been a matter of making it work for my own purposes.
