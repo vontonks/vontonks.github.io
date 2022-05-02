@@ -7,7 +7,7 @@ author: Case Tonkin
 ---
 A recent work trip down to the <a href="https://ia.acs.org.au/article/2022/f1-teams-race-for-an-ai-edge.html">F1 Grand Prix in Melbourne</a> got me into the sport again for the first time since I was a teenager.
 
-The Netflix series <i>Drive to Survive</i> and an active <a "href=https://www.reddit.com/r/formuladank/">meme community</a> on Reddit certainly helps as well.
+The Netflix series <i>Drive to Survive</i> and an active <a href="https://www.reddit.com/r/formuladank/">meme community</a> on Reddit certainly helps as well.
 
 And it's made me think about high performance and what that means in my context.
 
