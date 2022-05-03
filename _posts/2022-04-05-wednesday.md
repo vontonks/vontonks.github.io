@@ -32,7 +32,7 @@ Other things to work out are the formatting for links and titles especially. I l
 because it's unique but also it's transparent, saying THIS IS A LINK AND YOU CAN READ IT so you know what you're clicking on instead of just hitting some blue text and
 hoping for the best. So I'll stick with that.
 
-I settled on the "Day the date of month year" format for my Google Docs journal so let's stick to that. It's readable and unambiguous. There's no wondering which year or
+I settled on the "Day the date of month year" format for my Google Docs journal so let's keep that as well. It's readable and unambiguous. There's no wondering which year or
 whatever and can be seen by humans. If I want to do different titles I can do that, too. It's my damn blog after all.
 
 __________
