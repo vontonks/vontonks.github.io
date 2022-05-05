@@ -7,7 +7,9 @@ author: Casey Tonkin
 ---
 
 Still figuring this blog thing out. It's fun though. I've kept different journals over the years but recently settled on Google Docs because it's accessible on all my devices
-and since I'm lazy, that works well for me. But like it's still private (in the sense that not everyone can view it, not in the sense that Google products are privacy-focused
+and since I'm lazy, that works well for me. 
+
+But like it's still private (in the sense that not everyone can view it, not in the sense that Google products are privacy-focused
 and that's all well-and-good because, you know, private thoughts and all that. But I'm old enough and ugly enough now to really turn this into a diary-type thing.
 
 Why? Well, let's let Cory Doctorow explain it since he's been doing this for years:
