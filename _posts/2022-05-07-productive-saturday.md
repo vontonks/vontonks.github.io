@@ -50,6 +50,9 @@ UPDATE: I've remoted into my desktop, lol. So I guess unless there's a keylogger
 
 __________
 <strong>Current Projects</strong>
-'Kaylene' a short story about a digital artist: XXX words today (XXXX total)
+
+'Kaylene' a short story about a digital artist: 307 words today (2,280 total)
+
 'Narcissus' a novel: planning, character development
-2022 fiction word count: XXXXX
+
+2022 fiction word count: 14,059
