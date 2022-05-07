@@ -46,6 +46,8 @@ the various sites and things I use, the fact I've got Chrome tabs open, precisel
 
 But still, the assumption is that it would be worth anyone's time to do that, which I'm not sure at the moment it is given other priorities. Worth considering though.
 
+UPDATE: I've remoted into my desktop, lol. So I guess unless there's a keylogger which, you know, would be fucked, it just looks like I'm hanging out in a Teamviewer instance. Probably not the most secure thing of all time but hey. I guess I could setup a VM? Then remote into that? Seems complicated. Better opsec though.
+
 __________
 <strong>Current Projects</strong>
 'Kaylene' a short story about a digital artist: XXX words today (XXXX total)
