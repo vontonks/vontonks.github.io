@@ -74,7 +74,7 @@ So it ended, as all years do, and my slapdash 'write write write' attitude didn'
 on the dole and tried to write a novel. Well, I tried to write like three novels. They all sucked, don't ask.
 
 Anyway the point I've been trying to make is that at some point the economic reality of my situation meant I needed to get a 'job'. But with my newfound devotion to this writing 
-thing -- which came with all sorts of dumbe pretensions and snobbery about what constitutes 'authentic' writing -- I didn't know what to do. Sama vouched for me at 
+thing -- which came with all sorts of dumb pretensions and snobbery about what constitutes 'authentic' writing -- I didn't know what to do. Sama vouched for me at 
 a community newspaper and so I started getting paid ... in cheques. What mattered was that I was being paid to write. The circumstances were odd -- I had to physically cash 
 cheques in 2017 if you can believe it -- but my writing skills led to money going into my bank account (via cheque).
 
