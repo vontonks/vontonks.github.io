@@ -20,7 +20,7 @@ But tonight I've made this time for this blog so hooray for me.
 
 Yes but so uncertainty.
 
-I've started a new job, kind of, with ;internal communications' tacked onto my current journalist role. My new job title is 'Senior Writer' -- something I was consulted on and 
+I've started a new job, kind of, with 'internal communications' tacked onto my current journalist role. My new job title is 'Senior Writer' -- something I was consulted on and 
 honestly I quite like. Look at me, I'm 'senior'. Also: more money.
 
 The uncertainty is partly an ego thing -- I'm not a journalist and they're the like people with the scoops or whatever, but I'm also not a marketing guy or, I dunno, anything 
@@ -29,8 +29,7 @@ is excited to have me do. Honestly, I'm kind of excited about it as a 'new proje
 I can't say this is where I wanted to be but I also can't say I've been directed <em>toward</em> anything either, career-wise.
 
 People who had a strong sense of where they're going from a young age have always fascinated me. The kids who wanted to be doctors and then just, like, did that blew my mind. 
-Oh you're 15 and focused enough to select the subjects that will maximise chance of entry, then to study enough, and do the pre-admission test preparation? Very cool. 
-I was smoking weed, drinking, listening to loud angry music, and playing video games.
+Oh you're 15 and focused enough to select the subjects that will maximise chance of entry, then to study enough, and do the pre-admission test preparation? I was drinking, smoking weed, listening to loud angry music, and playing video games. Guess who's more likely to own their own home right now.
 
 Recently I wrote a profile about a woman whose first job straight out of high school was software engineering for a major tech company.
 
