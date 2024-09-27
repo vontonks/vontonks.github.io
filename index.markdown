@@ -2,11 +2,9 @@
 # Feel free to add content and custom Front Matter to this file.
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
-layout: default
+layout: vonlayout
 title: Home
 ---
-
-<h1>BLOG</h1>
 
 Welcome to my very own SITE here on the WORLD WIDE WEB
 

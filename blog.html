@@ -1,14 +1,14 @@
 ---
-layout: default
+layout: vonlayout
 title: Blog
 ---
-<h1>Latest Posts</h1>
+<h2>Latest Posts</h2>
 
 <ul>
     {% for post in site.posts %}
     <li>
-        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-        <!--Date: {{ post.date | date_to_string }}<br>-->
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        Date: {{ post.date | date_to_string }}<br>
         <!--Categories: {{post.categories | join: ', '}}-->
         {{ post.excerpt }}
     </li>

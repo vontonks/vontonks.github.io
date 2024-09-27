@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: vonlayout
 title:  "TEMPLATE"
 date:   YYYY-MM-DD HH:MM:SS +/-TTTT
 categories: blog

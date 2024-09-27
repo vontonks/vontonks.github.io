@@ -50,7 +50,7 @@ defaults:
   
 
 # Build settings
-theme: minima
+#theme: THEME_NAME
 plugins:
   - jekyll-feed
   - jekyll-sitemap
