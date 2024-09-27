@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Whatever, man"
-date: 2022-06-001
+date: 2022-06-01
 author: Casey Tonkin
 category: blog
 ---
