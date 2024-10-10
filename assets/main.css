@@ -14,6 +14,19 @@ body {
     max-width: 800px;
 }
 
+.post-box {
+    border: 1px solid #343030; /* Border color */
+    border-radius: 0px; /* Rounded corners */
+    padding: 20px; /* Inner spacing */
+    margin: 10px 0; /* Outer spacing between posts */
+    background-color: #f9f9f9; /* Background color */
+}
+
+.blog-page ul {
+ list-style: none;
+}
+
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Merriweather', serif;
     color: #2c3e50;
