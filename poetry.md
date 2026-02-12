@@ -5,32 +5,31 @@ title: Poetry
 
 <h2>the computer is using itself</h2>
 
-issuing commands and
-it running off and
-doing better than I ever could
-
-and yet
-an emptiness
-the net is leaving us behind
-
-and yet
-a hopefulness
-the fractured unreality ends
-
-eyes red and sore from staring
-into the flat abyss all day and all night
-hands sore from typing to it
-
-but it's time to stop
-put it to an end
-cede the digital world to the machines
-
-it's all over now
-only the real world remains
-where
-
+issuing commands and<br>
+it running off and<br>
+doing better than I ever could<br>
+<br>
+an emptiness<br>
+the net is leaving us behind<br>
+<br>
+and yet<br>
+a hopefulness<br>
+the fractured unreality ends<br>
+<br>
+eyes red and sore from staring<br>
+into the flat abyss all day and all night<br>
+hands sore from typing to it<br>
+<br>
+but it's time to stop<br>
+put it to an end<br>
+cede the digital world to the machines<br>
+<br>
+it's all over now<br>
+only the real world remains<br>
+where<br>
+<br>
 ***
-
+<br>
 
 <h2>A Haiku For Three</h2>
 
