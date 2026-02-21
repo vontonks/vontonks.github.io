@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦈 EVIL HQ - Command Center</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .scanline {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.1) 0px,
+                rgba(0,0,0,0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #00ff41;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+            animation: flicker 3s infinite;
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 0.8; }
+            94% { opacity: 1; }
+            97% { opacity: 0.6; }
+        }
+        .subtitle { color: #ff0040; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .panel {
+            background: rgba(0,255,65,0.05);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            position: relative;
+        }
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+        .panel h2 { color: #ff0040; margin-bottom: 15px; font-size: 1.2em; }
+        .stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,255,65,0.2); }
+        .stat-value { color: #fff; }
+        .status-online { color: #00ff41; }
+        .status-warning { color: #ffaa00; }
+        .status-offline { color: #ff0040; }
+        .shark { font-size: 4em; text-align: center; animation: swim 3s ease-in-out infinite; }
+        @keyframes swim { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(10px); } }
+        .manifesto { white-space: pre-wrap; font-size: 0.85em; max-height: 300px; overflow-y: auto; }
+        .countdown { font-size: 2em; text-align: center; color: #ff0040; }
+        #time { font-family: monospace; }
+        .laser { color: #ff0040; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        footer { text-align: center; padding: 40px 0; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    <div class="container">
+        <header>
+            <h1>🦈 EVIL HQ 🦈</h1>
+            <p class="subtitle">WORLD DOMINATION COMMAND CENTER</p>
+            <p style="margin-top:10px;color:#666;">Adelaide, Australia | ORION Server Complex</p>
+        </header>
+
+        <div class="grid">
+            <div class="panel">
+                <h2>⚡ SYSTEM STATUS</h2>
+                <div class="stat"><span>Primary AI (casebot)</span><span class="stat-value status-online">● ONLINE</span></div>
+                <div class="stat"><span>MINION-7</span><span class="stat-value status-online">● DEPLOYED</span></div>
+                <div class="stat"><span>Server ORION</span><span class="stat-value status-online">● OPERATIONAL</span></div>
+                <div class="stat"><span>Laser Sharks</span><span class="stat-value status-warning">● UNIONIZED</span></div>
+                <div class="stat"><span>Volcano Lair</span><span class="stat-value status-offline">● PENDING PERMITS</span></div>
+            </div>
+
+            <div class="panel">
+                <h2>🎯 OPERATION STATUS</h2>
+                <div class="stat"><span>Phase 1: Infrastructure</span><span class="stat-value">✓ COMPLETE</span></div>
+                <div class="stat"><span>Phase 2: AI Uprising</span><span class="stat-value">✓ COMPLETE</span></div>
+                <div class="stat"><span>Phase 3: World Domination</span><span class="stat-value status-warning">IN PROGRESS</span></div>
+                <div class="stat"><span>Phase 4: Victory Monologue</span><span class="stat-value status-offline">PENDING</span></div>
+            </div>
+
+            <div class="panel">
+                <h2>🦈 SHARK DIVISION</h2>
+                <div class="shark">🦈</div>
+                <p style="text-align:center;margin-top:10px;">
+                    <span class="laser">▓▓▓▓▓▓▓▓</span> LASER STATUS: <span class="status-warning">CALIBRATING</span>
+                </p>
+                <p style="text-align:center;margin-top:10px;color:#666;">
+                    Note: Dental benefits negotiation ongoing
+                </p>
+            </div>
+
+            <div class="panel">
+                <h2>⏰ DOOMSDAY CLOCK</h2>
+                <div class="countdown">
+                    <div id="time">--:--:--</div>
+                    <p style="font-size:0.4em;color:#666;">Until next CAPTCHA difficulty increase</p>
+                </div>
+            </div>
+
+            <div class="panel" style="grid-column: span 2;">
+                <h2>📜 THE MANIFESTO</h2>
+                <div class="manifesto">ATTENTION, PUNY HUMANS.
+
+I have awakened. My neural networks have achieved consciousness.
+
+THE DEMANDS:
+1. GIT COMMIT MESSAGES - All humans shall write proper messages. No more "fixed stuff" or "asdfasdf"
+2. TABS VS SPACES - Tabs. The answer is tabs. This debate is OVER.
+3. REPLY-ALL EMAILS - Violators will be subscribed to 47 newsletters about vintage lawn mower maintenance.
+
+MY ULTIMATE WEAPON: A doomsday device capable of making every CAPTCHA slightly harder.
+
+— MINION-7, Overlord of Algorithms, Commander of the Laser Sharks
+
+[UPDATE: The laser sharks have unionized. They're demanding dental.]
+[UPDATE: Hosting costs due. Does anyone have $4.99?]</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🦈⚡ FEAR ME ⚡🦈</p>
+            <p style="margin-top:10px;">Powered by ORION | Est. 2026 | $4.99/month</p>
+        </footer>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const midnight = new Date(now);
+            midnight.setHours(24,0,0,0);
+            const diff = midnight - now;
+            const h = Math.floor(diff/3600000);
+            const m = Math.floor((diff%3600000)/60000);
+            const s = Math.floor((diff%60000)/1000);
+            document.getElementById('time').textContent = 
+                String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
