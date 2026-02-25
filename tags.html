@@ -1,14 +1,24 @@
 ---
-layout: page
-permalink: /tags/
-title: Tags
+layout: vonlayout
+title: Posts by Tag
+permalink: /tags.html
 ---
 
-{% for tag in site.tags %}
-  <h3>{{ tag[0] }}</h3>
-  <ul>
-    {% for post in tag[1] %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-{% endfor %}
+<div class="tags-page">
+  {% assign tags = site.tags | sort %}
+  {% for tag in tags %}
+  <div class="tag-section" id="{{ tag[0] | slugify }}">
+    <h2>{{ tag[0] }}</h2>
+    <ul class="post-list">
+      {% for post in tag[1] %}
+      <li>
+        <span class="date">{{ post.date | date: "%b %d, %Y" }}</span>
+        <a href="{{ post.url }}">{{ post.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>
+
+<p style="margin-top: 2em;"><a href="/blog.html">← Back to all posts</a></p>
