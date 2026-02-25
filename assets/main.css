@@ -155,8 +155,61 @@ nav a.current {
 
 /* Responsive */
 @media (max-width: 700px) {
+    body {
+        font-size: 16px;
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    main {
+        padding: 10px 0;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .hero {
+        padding: 1em 0 0.5em;
+        margin-bottom: 1em;
+    }
+    
+    .hero h2 {
+        font-size: 1em;
+    }
+    
+    .hero p {
+        font-size: 0.95em;
+    }
+    
     .two-columns {
         flex-direction: column;
+        gap: 1em;
+        margin-bottom: 1em;
+    }
+    
+    .column {
+        padding: 1em;
+    }
+    
+    .column ul {
+        margin-bottom: 1em;
+    }
+    
+    nav ul {
+        flex-wrap: wrap;
+        gap: 0.5em;
+    }
+    
+    nav ul li {
+        margin-right: 10px;
+    }
+    
+    footer {
+        margin-top: 20px;
     }
 }
 
