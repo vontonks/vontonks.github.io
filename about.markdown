@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I'm Casey Michell-Tonkin, a senior policy advisor at the Australian Computer Society and former tech journalist.
+I'm Casey Tonkin, a senior policy advisor at the Australian Computer Society and former tech journalist.
 
 My career sits at the intersection of technology and communication. After completing my Honours in Creative Writing at the University of Adelaide, I spent five years covering Australia's tech industry for Information Age, earning finalist spots at the IT Journalism Awards in 2020 and 2021. In 2024, I moved into policy work, where I now lead strategic projects advocating for Australia's IT sector.
 
