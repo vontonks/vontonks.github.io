@@ -61,3 +61,102 @@ nav ul li:last-child {
     margin-right: 0;
 }
 
+nav a.current {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Hero section */
+.hero {
+    text-align: center;
+    padding: 2em 0 1em;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 2em;
+}
+
+.hero h2 {
+    font-size: 1.3em;
+    color: #555;
+    font-weight: normal;
+    margin-bottom: 0.5em;
+}
+
+.hero p {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.1em;
+}
+
+/* Two column layout */
+.two-columns {
+    display: flex;
+    gap: 2em;
+    margin-bottom: 2em;
+}
+
+.column {
+    flex: 1;
+    padding: 1.5em;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.column h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 0.5em;
+}
+
+.column ul {
+    padding-left: 1.2em;
+    margin-bottom: 1.5em;
+}
+
+.column li {
+    margin-bottom: 0.5em;
+}
+
+/* Buttons */
+.button {
+    display: inline-block;
+    padding: 0.6em 1.2em;
+    background: #2c3e50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0.95em;
+}
+
+.button:hover {
+    background: #1a252f;
+}
+
+/* Recent writing */
+.recent-writing {
+    padding-top: 1em;
+    border-top: 1px solid #ddd;
+}
+
+.recent-writing ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-writing li {
+    padding: 0.5em 0;
+    border-bottom: 1px solid #eee;
+}
+
+.recent-writing .date {
+    color: #888;
+    font-size: 0.9em;
+    margin-left: 0.5em;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .two-columns {
+        flex-direction: column;
+    }
+}
+
