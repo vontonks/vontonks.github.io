@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#bg)"/>
+  
+  <!-- Title -->
+  <text x="300" y="50" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="28" fill="#ffd700">AFL GRAND FINAL 2007</text>
+  <text x="300" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#888">Melbourne Cricket Ground • 29 September 2007</text>
+  
+  <!-- Geelong -->
+  <rect x="40" y="110" width="250" height="120" fill="#001f3f" stroke="#1e3d6b" stroke-width="3" rx="10"/>
+  <text x="165" y="155" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="24" fill="#fff">GEELONG</text>
+  <text x="165" y="200" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="48" fill="#ffd700">24.19 (163)</text>
+  
+  <!-- Port Adelaide -->
+  <rect x="310" y="110" width="250" height="120" fill="#008b8b" stroke="#00a8a8" stroke-width="3" rx="10"/>
+  <text x="435" y="155" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="24" fill="#fff">PORT ADELAIDE</text>
+  <text x="435" y="200" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="48" fill="#000">6.8 (44)</text>
+  
+  <!-- Margin -->
+  <text x="300" y="280" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="32" fill="#ff4444">RECORD MARGIN: 119 POINTS</text>
+  <text x="300" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#ccc">Greatest winning margin in VFL/AFL Grand Final history</text>
+  
+  <!-- Norm Smith -->
+  <text x="300" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#888">Norm Smith Medal: Steve Johnson (Geelong)</text>
+  <text x="300" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666">Attendance: 97,302</text>
+</svg>
