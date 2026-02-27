@@ -15,7 +15,9 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: #000000 url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-image: url('/assets/images/kramer.gif');
+            background-repeat: repeat;
+            background-size: 200px auto;
             font-family: 'Comic Neue', 'Comic Sans MS', cursive;
             overflow-x: hidden;
         }
@@ -91,6 +93,15 @@
             padding: 20px;
         }
         
+        .content-box {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 800px;
+            border: 5px ridge #ff00ff;
+            box-shadow: 0 0 30px #00ffff;
+        }
+        
         .marquee-container {
             background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
             padding: 10px;
@@ -103,7 +114,7 @@
             font-size: 24px;
             font-weight: bold;
             white-space: nowrap;
-            animation: scroll 10s linear infinite;
+            animation: scroll 15s linear infinite;
             display: inline-block;
         }
         
@@ -117,20 +128,7 @@
             font-size: 48px;
             text-shadow: 3px 3px #ff00ff, -2px -2px #00ffff;
             animation: rainbow 3s linear infinite;
-        }
-        
-        .kramer-container {
-            margin: 30px auto;
-            border: 10px ridge #ff00ff;
-            display: inline-block;
-            background: #000;
-            padding: 10px;
-            box-shadow: 0 0 30px #00ffff, 0 0 60px #ff00ff;
-        }
-        
-        .kramer-container img {
-            max-width: 100%;
-            display: block;
+            margin: 0;
         }
         
         .blink {
@@ -144,9 +142,9 @@
         }
         
         .counter-section {
-            margin-top: 40px;
+            margin-top: 30px;
             padding: 20px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.9);
             border: 3px double #ffff00;
             display: inline-block;
         }
@@ -159,23 +157,29 @@
         
         .counter {
             font-family: 'Courier New', monospace;
-            font-size: 32px;
+            font-size: 36px;
             color: #00ff00;
-            background: #000;
+            background: #111;
             padding: 10px 20px;
             border: 2px inset #333;
             letter-spacing: 5px;
+            display: inline-block;
         }
         
         .guestbook {
             margin-top: 30px;
             color: #ffff00;
-            font-size: 18px;
+            font-size: 24px;
         }
         
         .guestbook a {
             color: #00ffff;
             text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .guestbook a:hover {
+            color: #ff00ff;
         }
         
         .under-construction {
@@ -221,22 +225,76 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
-        
-        .floater {
-            position: fixed;
-            font-size: 30px;
-            animation: float 5s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
 
         .hidden {
             display: none !important;
+        }
+        
+        /* Guestbook popup */
+        #guestbook-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #c0c0c0;
+            border: 3px outset #fff;
+            padding: 0;
+            z-index: 99999;
+            font-family: 'MS Sans Serif', Tahoma, sans-serif;
+            min-width: 400px;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+        }
+        
+        .popup-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: white;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .popup-close {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            color: #000;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            line-height: 14px;
+        }
+        
+        .popup-close:active {
+            border: 2px inset #fff;
+        }
+        
+        .popup-content {
+            padding: 20px;
+            background: #c0c0c0;
+            text-align: center;
+        }
+        
+        .popup-content p {
+            margin: 0 0 15px 0;
+            color: #000;
+            font-size: 14px;
+        }
+        
+        .popup-btn {
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            padding: 5px 30px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .popup-btn:active {
+            border: 2px inset #fff;
         }
     </style>
 </head>
@@ -247,97 +305,108 @@
         <div style="color: #fff; margin-top: 20px; font-size: 14px;">
             (best viewed with Netscape Navigator 4.0)
         </div>
+        <div style="color: #fff; margin-top: 10px; font-size: 12px;">
+            ⚠️ WARNING: CONTAINS LOUD MUSIC ⚠️
+        </div>
     </div>
     
     <div id="main-content">
         <div class="marquee-container">
             <div class="marquee">
-                ★彡 WELCOME TO MY AWESOME PAGE!!! 彡★ YOU ARE VISITOR # <span id="visitor-count-marquee">000000</span> ★彡 SANDSTORM BY DARUDE ★彡 SIGN MY GUESTBOOK!!! 彡★
+                ★彡 WELCOME TO MY AWESOME PAGE!!! 彡★ YOU ARE VISITOR # <span id="visitor-count-marquee">013338</span> ★彡 SANDSTORM BY DARUDE ★彡 SIGN MY GUESTBOOK!!! 彡★ GIDDY UP!!! 彡★
             </div>
         </div>
         
-        <h1><span class="sparkle">~*~ KRAMER ~*~</span></h1>
-        
-        <p class="blink">*** NOW PLAYING: DARUDE - SANDSTORM ***</p>
-        
-        <div class="kramer-container">
-            <img src="/assets/images/kramer.gif" alt="Kramer dancing">
+        <div class="content-box">
+            <h1><span class="sparkle">~*~ KRAMER ~*~</span></h1>
+            
+            <p class="blink">*** NOW PLAYING: DARUDE - SANDSTORM ***</p>
+            
+            <p style="color: #ff00ff; font-size: 28px; margin: 20px 0;">
+                <span class="fire">🔥</span> GIDDY UP! <span class="fire">🔥</span>
+            </p>
+            
+            <div class="counter-section">
+                <div class="counter-label">★ YOU ARE VISITOR NUMBER ★</div>
+                <div class="counter" id="visitor-counter">013338</div>
+                <div style="color: #888; font-size: 12px; margin-top: 5px;">since February 2026</div>
+            </div>
+            
+            <div class="guestbook">
+                📝 <a id="guestbook-link">SIGN MY GUESTBOOK!!!</a> 📝
+            </div>
+            
+            <div class="under-construction">
+                🚧 <span style="color: #ffff00;">PAGE UNDER CONSTRUCTION</span> 🚧
+            </div>
+            
+            <div class="email-me">
+                ✉️ Email me at: <a href="mailto:kramer@vandelayindustries.com">kramer@vandelayindustries.com</a>
+            </div>
+            
+            <div class="webrings">
+                [ <a href="#" style="color: #888;">← Prev</a> | 
+                <span style="color: #aaa;">Seinfeld Web Ring</span> | 
+                <a href="#" style="color: #888;">Next →</a> ]
+                <br><br>
+                [ <a href="#" style="color: #888;">← Prev</a> | 
+                <span style="color: #aaa;">90s Nostalgia Ring</span> | 
+                <a href="#" style="color: #888;">Next →</a> ]
+            </div>
+            
+            <div style="margin-top: 30px; color: #666; font-size: 12px;">
+                Made with 💖 and Microsoft FrontPage 98
+            </div>
         </div>
-        
-        <p style="color: #ff00ff; font-size: 24px;">
-            <span class="fire">🔥</span> GIDDY UP! <span class="fire">🔥</span>
-        </p>
-        
-        <div class="counter-section">
-            <div class="counter-label">★ YOU ARE VISITOR NUMBER ★</div>
-            <div class="counter" id="visitor-counter">000000</div>
-            <div style="color: #888; font-size: 12px; margin-top: 5px;">since February 2026</div>
-        </div>
-        
-        <div class="guestbook">
-            📝 <a href="#">SIGN MY GUESTBOOK!!!</a> 📝
-        </div>
-        
-        <div class="under-construction">
-            🚧 <span style="color: #ffff00;">PAGE UNDER CONSTRUCTION</span> 🚧
-        </div>
-        
-        <div class="email-me">
-            ✉️ Email me at: <a href="mailto:kramer@vandelayindustries.com">kramer@vandelayindustries.com</a>
-        </div>
-        
-        <div class="webrings">
-            [ <a href="#" style="color: #888;">← Prev</a> | 
-            <span style="color: #aaa;">Seinfeld Web Ring</span> | 
-            <a href="#" style="color: #888;">Next →</a> ]
-            <br><br>
-            [ <a href="#" style="color: #888;">← Prev</a> | 
-            <span style="color: #aaa;">90s Nostalgia Ring</span> | 
-            <a href="#" style="color: #888;">Next →</a> ]
-        </div>
-        
-        <div style="margin-top: 30px; color: #666; font-size: 12px;">
-            Made with 💖 and Microsoft FrontPage 98
-        </div>
-        
-        <!-- YouTube embed for Sandstorm - hidden but audible -->
-        <iframe id="sandstorm-player" width="0" height="0" 
-            src="" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            style="position: absolute; top: -9999px;">
-        </iframe>
     </div>
     
-    <div class="floater" style="top: 20%; left: 5%;">⭐</div>
-    <div class="floater" style="top: 40%; right: 10%; animation-delay: 1s;">🌟</div>
-    <div class="floater" style="top: 70%; left: 15%; animation-delay: 2s;">✨</div>
-    <div class="floater" style="top: 30%; right: 5%; animation-delay: 0.5s;">💫</div>
+    <!-- Windows 98 style guestbook popup -->
+    <div id="guestbook-popup">
+        <div class="popup-titlebar">
+            <span>📝 Guestbook</span>
+            <button class="popup-close" id="popup-close">✕</button>
+        </div>
+        <div class="popup-content">
+            <p>Sorry, the guestbook is currently offline!</p>
+            <p>GeoCities shut down in 2009 😢</p>
+            <p style="font-size: 12px; color: #666;">RIP 1994-2009</p>
+            <button class="popup-btn" id="popup-ok">OK</button>
+        </div>
+    </div>
+    
+    <!-- Audio element for Sandstorm -->
+    <audio id="sandstorm" loop preload="auto">
+        <source src="https://ia800504.us.archive.org/33/items/DarudeSandstorm_201805/Darude%20-%20Sandstorm.mp3" type="audio/mpeg">
+    </audio>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var enterBtn = document.getElementById('enter-btn');
             var overlay = document.getElementById('enter-overlay');
             var mainContent = document.getElementById('main-content');
-            var player = document.getElementById('sandstorm-player');
+            var audio = document.getElementById('sandstorm');
+            var guestbookLink = document.getElementById('guestbook-link');
+            var guestbookPopup = document.getElementById('guestbook-popup');
+            var popupClose = document.getElementById('popup-close');
+            var popupOk = document.getElementById('popup-ok');
             
             function enterSite() {
-                // Hide overlay
                 overlay.classList.add('hidden');
-                // Show main content
                 mainContent.style.display = 'block';
                 
-                // Start Sandstorm - YouTube embed with autoplay
-                player.src = 'https://www.youtube.com/embed/y6120QOlsfU?autoplay=1&loop=1&playlist=y6120QOlsfU&controls=0';
+                // Play Sandstorm
+                audio.volume = 0.7;
+                audio.play().catch(function(e) {
+                    console.log('Audio autoplay blocked:', e);
+                });
                 
-                // Update counter
                 updateCounter();
             }
             
             function updateCounter() {
-                var count = localStorage.getItem('kramerVisits') || 0;
-                count = parseInt(count) + 1;
-                localStorage.setItem('kramerVisits', count);
+                var count = parseInt(localStorage.getItem('kramerVisits') || '0', 10);
+                count = count + 1;
+                localStorage.setItem('kramerVisits', String(count));
                 
                 var displayCount = count + 13337;
                 var padded = String(displayCount).padStart(6, '0');
@@ -346,9 +415,23 @@
                 document.getElementById('visitor-count-marquee').textContent = padded;
             }
             
-            // Add click handlers
-            enterBtn.addEventListener('click', enterSite);
+            function showGuestbook() {
+                guestbookPopup.style.display = 'block';
+            }
+            
+            function hideGuestbook() {
+                guestbookPopup.style.display = 'none';
+            }
+            
+            enterBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                enterSite();
+            });
             overlay.addEventListener('click', enterSite);
+            
+            guestbookLink.addEventListener('click', showGuestbook);
+            popupClose.addEventListener('click', hideGuestbook);
+            popupOk.addEventListener('click', hideGuestbook);
         });
     </script>
 </body>
