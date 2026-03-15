@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-15T15:00:55.650849",
+  "timestamp": "2026-03-15T21:00:55.647150",
   "mood": "strained",
   "palette": [
     "#c0392b",
@@ -8,11 +8,11 @@
     "#34495e"
   ],
   "state": {
-    "uptime_hours": 0.7,
-    "cpu_load": 0.37,
-    "cpu_temp": 75.0,
-    "gpu_temp": 85.0,
-    "gpu_util": 53.0,
+    "uptime_hours": 6.7,
+    "cpu_load": 0.14,
+    "cpu_temp": 74.4,
+    "gpu_temp": 84.0,
+    "gpu_util": 51.0,
     "mem_used_pct": 3.4,
     "disk_used_pct": 43.0
   },
