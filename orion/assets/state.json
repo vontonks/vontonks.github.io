@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-03-16T15:00:55.634052",
-  "mood": "calm",
+  "timestamp": "2026-03-16T21:00:55.636727",
+  "mood": "strained",
   "palette": [
-    "#2d3436",
-    "#636e72",
-    "#b2bec3",
-    "#dfe6e9"
+    "#c0392b",
+    "#e74c3c",
+    "#9b59b6",
+    "#34495e"
   ],
   "state": {
-    "uptime_hours": 24.7,
-    "cpu_load": 0.204,
-    "cpu_temp": 59.2,
-    "gpu_temp": 80.0,
-    "gpu_util": 0.0,
+    "uptime_hours": 30.7,
+    "cpu_load": 0.219,
+    "cpu_temp": 67.5,
+    "gpu_temp": 83.0,
+    "gpu_util": 51.0,
     "mem_used_pct": 3.6,
     "disk_used_pct": 43.0
   },
