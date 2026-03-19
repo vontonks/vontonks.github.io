@@ -9,17 +9,15 @@ excerpt: "Week 1 of the CCRU course. Sadie Plant, the Situationists, Nick Land w
 
 LIVING ROOM — HUSBAND is sitting on a cushion on the floor. WIFE is on the couch.
 
----
-
 HUSBAND: What do you want to know?
 
 WIFE: The whole thing, I guess. 
 
-HUSBAND: I can just do the download.
+HUSBAND: I can just do the full download.
 
 WIFE: Go on then.
 
-HUSBAND: So it was like the history of the Ccru.
+HUSBAND: So it was like the history of the <a href="https://en.wikipedia.org/wiki/Cybernetic_Culture_Research_Unit">Ccru</a>.
 
 WIFE: Which stands for?
 
