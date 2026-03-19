@@ -37,7 +37,7 @@ xX_aGeNtScArFaCe_Xx: Oh no, there she goes again.
 
 TeddyBear83: Poor thing.
 
-*Patient, hopeful silence. The cries do not continue*
+*Patient, hopeful silence. The cries do not continue.*
 
 TeddyBear83: I think what they did was stage fairly abstract performance artworks. Spectacles. And it was almost meant to be like an absurdist circuit breaker to get people out of the capitalist consumption machine, right? I think that was the idea — hey, we're in the world and we can bring in a new reality if we just sort of act differently and think differently about how to behave and be in the world. I think that was the concept. So she studied them and then she was a cyberfeminist — talking about the new realities of cybernetic cultures and internet cultures and digital technologies and how it's changing society. But this is the early 90s, right?
 
@@ -59,7 +59,7 @@ TeddyBear83: Land. Yeah.
 
 xX_aGeNtScArFaCe_Xx: Oh okay. Not like the kids' book author, Nick Bland.
 
-TeddyBear83: No, but every time I see Cranky Bear I do think it's kind of funny. So anyway they did some weird stuff. It was borderline culty but they had a real big following. And you can see where the Situationist stuff comes in — they would host these conferences and there was some story about Nick Land presenting a talk on a certain type of music and he's just writhing on the floor growling into a microphone. It wasn't academic in any normal sense. So eventually there was a conflict and the uni was like — you've got to do papers and lectures. And he was not doing that.
+TeddyBear83: No, but every time I see *The Very Cranky Bear* I do think it's kind of funny. So anyway they did some weird stuff. It was borderline culty but they had a real big following. And you can see where the Situationist stuff comes in — they would host these conferences and there was some story about Nick Land presenting a talk on a certain type of music and he's just writhing on the floor growling into a microphone. It wasn't academic in any normal sense. So eventually there was a conflict and the uni was like — you've got to do papers and lectures. And he was not doing that.
 
 *The cries begin again, more emphatically than before. It becomes a scream.*
 
@@ -85,7 +85,7 @@ TeddyBear83: I think Trump is almost an example? Him becoming president — it w
 
 xX_aGeNtScArFaCe_Xx: Okay yeah I think I get that.
 
-TeddyBear83: And where we end up now — and I think this is the point of the lecturer, Vincent Lê, who's just done a book on Nick Land — his sort of endpoint is that these guys, the right-wing accelerationists, stem from this and kind of run the US at the moment. It's sort of the dominant ideology. But anyway that's not quite where we are yet in the course because there is this interesting part where at some point they're living in the birthplace of occultist—
+TeddyBear83: And where we end up now — and I think this is the point of the lecturer, Vincent Lê, who's just done a book on Nick Land — his sort of endpoint is that these guys, the right-wing accelerationists, stem from this and kind of running the US at the moment. It's sort of the dominant ideology. But anyway that's not quite where we are yet in the course because there is this interesting part where at some point they're living in the birthplace of occultist—
 
 xX_aGeNtScArFaCe_Xx: Who?
 
