@@ -1,0 +1,438 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCRU Notes | Casey Tonkin</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <meta name="description" content="Notes from the Cybernetic Culture Research Unit course at the Melbourne School of Continental Philosophy">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-cyan: #0ff;
+            --neon-magenta: #f0f;
+            --neon-green: #0f0;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --text-color: #c0c0c0;
+            --text-bright: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+        
+        /* Matrix rain background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ctext x='10' y='20' fill='%2300ff00' font-family='monospace' font-size='12'%3E01001%3C/text%3E%3Ctext x='50' y='40' fill='%2300ff00' font-family='monospace' font-size='12'%3E11010%3C/text%3E%3Ctext x='20' y='60' fill='%2300ff00' font-family='monospace' font-size='12'%3E00111%3C/text%3E%3Ctext x='60' y='80' fill='%2300ff00' font-family='monospace' font-size='12'%3E10100%3C/text%3E%3C/svg%3E");
+        }
+        
+        /* Scanline overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 9999;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { text-shadow: 2px 0 var(--neon-cyan), -2px 0 var(--neon-magenta); }
+            25% { text-shadow: -2px 0 var(--neon-cyan), 2px 0 var(--neon-magenta); }
+            50% { text-shadow: 2px 2px var(--neon-cyan), -2px -2px var(--neon-magenta); }
+            75% { text-shadow: -2px 2px var(--neon-cyan), 2px -2px var(--neon-magenta); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            border-bottom: 1px solid #1a1a2e;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            color: var(--text-bright);
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            animation: glitch 4s infinite;
+        }
+        
+        .hero .subtitle {
+            color: var(--neon-cyan);
+            font-size: 1.1em;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+        }
+        
+        .hero .desc {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        
+        .hero .course-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--darker-bg);
+            border: 1px solid #1a1a2e;
+            display: inline-block;
+            text-align: left;
+        }
+        
+        .hero .course-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        .hero .course-info strong {
+            color: var(--neon-magenta);
+        }
+        
+        /* Nav */
+        nav {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 15px;
+            letter-spacing: 2px;
+            font-size: 0.9em;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+        
+        /* Posts grid */
+        .posts-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-cyan);
+            font-size: 1.2em;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        
+        .posts-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .post-card {
+            background: var(--darker-bg);
+            border: 1px solid #1a1a2e;
+            padding: 25px;
+            text-decoration: none;
+            transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--neon-cyan), var(--neon-magenta));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .post-card:hover {
+            border-color: var(--neon-cyan);
+            transform: translateX(5px);
+        }
+        
+        .post-card:hover::before {
+            opacity: 1;
+        }
+        
+        .post-card .week {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-magenta);
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        
+        .post-card h3 {
+            color: var(--text-bright);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .post-card .date {
+            color: #666;
+            font-size: 0.85em;
+        }
+        
+        .post-card .excerpt {
+            color: var(--text-color);
+            font-size: 0.9em;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--darker-bg);
+            border: 1px dashed #1a1a2e;
+        }
+        
+        .empty-state .icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .empty-state p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state .status {
+            color: var(--neon-green);
+            font-size: 0.9em;
+        }
+        
+        /* Syllabus */
+        .syllabus {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #1a1a2e;
+        }
+        
+        .syllabus h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-cyan);
+            font-size: 1.2em;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+        
+        .syllabus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .syllabus-item {
+            background: var(--darker-bg);
+            border: 1px solid #1a1a2e;
+            padding: 15px;
+            font-size: 0.9em;
+        }
+        
+        .syllabus-item .week-num {
+            color: var(--neon-magenta);
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+        
+        .syllabus-item .topic {
+            color: var(--text-bright);
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding: 30px 0;
+            border-top: 1px solid #1a1a2e;
+            text-align: center;
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        footer a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2em;
+                letter-spacing: 4px;
+            }
+            
+            .hero .subtitle {
+                font-size: 0.9em;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <div class="container">
+        <nav>
+            <a href="/">HOME</a>
+            <a href="/blog.html">BLOG</a>
+            <a href="/ccru/">CCRU</a>
+        </nav>
+        
+        <div class="hero">
+            <h1>CCRU_NOTES</h1>
+            <p class="subtitle">CYBERNETIC CULTURE RESEARCH UNIT</p>
+            <p class="desc">
+                Weekly notes from the CCRU course at the Melbourne School of Continental Philosophy. 
+                Hyperstition, numograms, theory-fictions, and the inhuman Outside.
+            </p>
+            <div class="course-info">
+                <p><strong>LECTURER:</strong> Vincent Lê</p>
+                <p><strong>SCHEDULE:</strong> Wed 6:30-8:30pm AEDT</p>
+                <p><strong>DURATION:</strong> March 18 – June 10, 2026</p>
+                <p><strong>LOCATION:</strong> Brunswick / Zoom</p>
+            </div>
+        </div>
+        
+        <div class="posts-section">
+            <h2>// TRANSMISSIONS</h2>
+            
+            {% assign ccru_posts = site.posts | where_exp: "post", "post.tags contains 'ccru'" | sort: "date" | reverse %}
+            
+            {% if ccru_posts.size > 0 %}
+            <div class="posts-grid">
+                {% for post in ccru_posts %}
+                <a href="{{ post.url }}" class="post-card">
+                    {% if post.week %}<div class="week">WEEK {{ post.week }}</div>{% endif %}
+                    <h3>{{ post.title }}</h3>
+                    <div class="date">{{ post.date | date: "%Y.%m.%d" }}</div>
+                    {% if post.excerpt %}<div class="excerpt">{{ post.excerpt | strip_html | truncate: 150 }}</div>{% endif %}
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="icon">◌</div>
+                <p>No transmissions yet.</p>
+                <p class="status">> AWAITING SIGNAL...</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="syllabus">
+            <h2>// SYLLABUS</h2>
+            <div class="syllabus-grid">
+                <div class="syllabus-item">
+                    <div class="week-num">WEEK 1</div>
+                    <div class="topic">The Story Goes Like This...</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEKS 2-3</div>
+                    <div class="topic">Cyberfeminism</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEK 4</div>
+                    <div class="topic">Theory-Fiction</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEK 5</div>
+                    <div class="topic">Hyperstition</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEKS 6-8</div>
+                    <div class="topic">Qabbalism</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEK 9</div>
+                    <div class="topic">NeoChina</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEKS 10-11</div>
+                    <div class="topic">Right/Left Accelerationisms</div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="week-num">WEEK 12</div>
+                    <div class="topic">Judgement Day</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>[ <a href="/">CASEY TONKIN</a> ] // <a href="https://www.mscp.org.au/courses/evening-school-sem1-2026#course2" target="_blank">MSCP</a> 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
