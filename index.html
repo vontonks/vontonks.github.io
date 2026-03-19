@@ -378,6 +378,89 @@ layout: null
             background: #c0c0c0;
         }
 
+        /* Minesweeper */
+        .minesweeper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #c0c0c0;
+            border: 2px inset #888;
+            padding: 4px 6px;
+            margin-bottom: 6px;
+        }
+        
+        .mine-counter, .mine-timer {
+            background: #000;
+            color: #f00;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 24px;
+            padding: 2px 4px;
+            min-width: 45px;
+            text-align: center;
+            border: 1px inset #888;
+        }
+        
+        .reset-btn {
+            width: 26px;
+            height: 26px;
+            font-size: 16px;
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reset-btn:active {
+            border: 2px inset #888;
+        }
+        
+        .mine-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 20px);
+            gap: 0;
+            border: 2px inset #888;
+            background: #c0c0c0;
+        }
+        
+        .mine-cell {
+            width: 20px;
+            height: 20px;
+            background: #c0c0c0;
+            border: 2px outset #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .mine-cell.revealed {
+            border: 1px solid #888;
+            background: #c0c0c0;
+        }
+        
+        .mine-cell.mine {
+            background: #f00;
+        }
+        
+        .mine-cell.flagged::after {
+            content: '🚩';
+            font-size: 12px;
+        }
+        
+        .mine-cell[data-num="1"] { color: #0000ff; }
+        .mine-cell[data-num="2"] { color: #008000; }
+        .mine-cell[data-num="3"] { color: #ff0000; }
+        .mine-cell[data-num="4"] { color: #000080; }
+        .mine-cell[data-num="5"] { color: #800000; }
+        .mine-cell[data-num="6"] { color: #008080; }
+        .mine-cell[data-num="7"] { color: #000000; }
+        .mine-cell[data-num="8"] { color: #808080; }
+
         /* BSOD Easter Egg */
         .bsod {
             display: none;
@@ -463,6 +546,11 @@ layout: null
         <div class="desktop-icon" onclick="showBSOD()">
             <span class="icon-emoji">🗑️</span>
             <div class="icon-label">Recycle Bin</div>
+        </div>
+
+        <div class="desktop-icon" data-window="minesweeper-window" ondblclick="openWindow('minesweeper-window'); initMinesweeper();">
+            <span class="icon-emoji">💣</span>
+            <div class="icon-label">Minesweeper</div>
         </div>
     </div>
 
@@ -567,6 +655,25 @@ layout: null
                 <strong>💻 GitHub:</strong><br>
                 <a href="https://github.com/vontonks" target="_blank">github.com/vontonks</a>
             </div>
+        </div>
+    </div>
+
+    <!-- Minesweeper Window -->
+    <div class="window" id="minesweeper-window" style="top: 60px; left: 120px; width: auto;">
+        <div class="window-titlebar" onmousedown="startDrag(event, 'minesweeper-window')">
+            <span class="window-title">💣 Minesweeper</span>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('minesweeper-window')">_</button>
+                <button class="window-btn" onclick="closeWindow('minesweeper-window')">×</button>
+            </div>
+        </div>
+        <div class="window-content" style="padding: 8px;">
+            <div class="minesweeper-header">
+                <div class="mine-counter" id="mine-counter">010</div>
+                <button class="reset-btn" id="reset-btn" onclick="initMinesweeper()">🙂</button>
+                <div class="mine-timer" id="mine-timer">000</div>
+            </div>
+            <div class="mine-grid" id="mine-grid"></div>
         </div>
     </div>
 
@@ -765,6 +872,178 @@ layout: null
         });
 
         // Desktop ready - let users explore
+
+        // Minesweeper
+        const ROWS = 9;
+        const COLS = 9;
+        const MINES = 10;
+        let grid = [];
+        let revealed = [];
+        let flagged = [];
+        let gameOver = false;
+        let gameWon = false;
+        let timerInterval = null;
+        let seconds = 0;
+        let firstClick = true;
+
+        function initMinesweeper() {
+            grid = [];
+            revealed = [];
+            flagged = [];
+            gameOver = false;
+            gameWon = false;
+            firstClick = true;
+            seconds = 0;
+            clearInterval(timerInterval);
+            document.getElementById('mine-timer').textContent = '000';
+            document.getElementById('mine-counter').textContent = String(MINES).padStart(3, '0');
+            document.getElementById('reset-btn').textContent = '🙂';
+            
+            // Init empty grid
+            for (let r = 0; r < ROWS; r++) {
+                grid[r] = [];
+                revealed[r] = [];
+                flagged[r] = [];
+                for (let c = 0; c < COLS; c++) {
+                    grid[r][c] = 0;
+                    revealed[r][c] = false;
+                    flagged[r][c] = false;
+                }
+            }
+            
+            // Place mines
+            let placed = 0;
+            while (placed < MINES) {
+                const r = Math.floor(Math.random() * ROWS);
+                const c = Math.floor(Math.random() * COLS);
+                if (grid[r][c] !== -1) {
+                    grid[r][c] = -1;
+                    placed++;
+                }
+            }
+            
+            // Calculate numbers
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (grid[r][c] === -1) continue;
+                    let count = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            const nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] === -1) {
+                                count++;
+                            }
+                        }
+                    }
+                    grid[r][c] = count;
+                }
+            }
+            
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('mine-grid');
+            container.innerHTML = '';
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'mine-cell';
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    
+                    if (revealed[r][c]) {
+                        cell.classList.add('revealed');
+                        if (grid[r][c] === -1) {
+                            cell.textContent = '💣';
+                            cell.classList.add('mine');
+                        } else if (grid[r][c] > 0) {
+                            cell.textContent = grid[r][c];
+                            cell.dataset.num = grid[r][c];
+                        }
+                    } else if (flagged[r][c]) {
+                        cell.classList.add('flagged');
+                    }
+                    
+                    cell.addEventListener('click', () => handleClick(r, c));
+                    cell.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        handleRightClick(r, c);
+                    });
+                    container.appendChild(cell);
+                }
+            }
+        }
+
+        function handleClick(r, c) {
+            if (gameOver || gameWon || flagged[r][c] || revealed[r][c]) return;
+            
+            if (firstClick) {
+                firstClick = false;
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    document.getElementById('mine-timer').textContent = String(Math.min(seconds, 999)).padStart(3, '0');
+                }, 1000);
+            }
+            
+            if (grid[r][c] === -1) {
+                // Hit a mine
+                gameOver = true;
+                clearInterval(timerInterval);
+                document.getElementById('reset-btn').textContent = '😵';
+                // Reveal all mines
+                for (let rr = 0; rr < ROWS; rr++) {
+                    for (let cc = 0; cc < COLS; cc++) {
+                        if (grid[rr][cc] === -1) revealed[rr][cc] = true;
+                    }
+                }
+                renderGrid();
+                return;
+            }
+            
+            // Flood fill for empty cells
+            revealCell(r, c);
+            renderGrid();
+            checkWin();
+        }
+
+        function revealCell(r, c) {
+            if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return;
+            if (revealed[r][c] || flagged[r][c]) return;
+            
+            revealed[r][c] = true;
+            
+            if (grid[r][c] === 0) {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        revealCell(r + dr, c + dc);
+                    }
+                }
+            }
+        }
+
+        function handleRightClick(r, c) {
+            if (gameOver || gameWon || revealed[r][c]) return;
+            
+            flagged[r][c] = !flagged[r][c];
+            const flagCount = flagged.flat().filter(Boolean).length;
+            document.getElementById('mine-counter').textContent = String(Math.max(0, MINES - flagCount)).padStart(3, '0');
+            renderGrid();
+        }
+
+        function checkWin() {
+            let revealedCount = 0;
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (revealed[r][c]) revealedCount++;
+                }
+            }
+            if (revealedCount === ROWS * COLS - MINES) {
+                gameWon = true;
+                clearInterval(timerInterval);
+                document.getElementById('reset-btn').textContent = '😎';
+            }
+        }
     </script>
 </body>
 </html>
