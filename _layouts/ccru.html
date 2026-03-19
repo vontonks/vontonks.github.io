@@ -536,6 +536,53 @@
             90%, 95% { opacity: 0.4; }
         }
         
+        /* Typewriter effect */
+        .typed-content {
+            visibility: hidden;
+        }
+        
+        .typed-content.typing {
+            visibility: visible;
+        }
+        
+        .typed-content.done {
+            visibility: visible;
+        }
+        
+        .skip-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px 16px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .skip-btn:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        .skip-btn.hidden {
+            display: none;
+        }
+        
+        /* Typing cursor */
+        .type-cursor {
+            display: inline;
+            border-right: 2px solid var(--neon-green);
+            animation: blink 0.7s step-end infinite;
+            margin-left: 2px;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .container {
@@ -596,7 +643,8 @@
             
             <h1>{{ page.title }}</h1>
             
-            {{ content }}
+            <div id="typed-content" class="typed-content">{{ content }}</div>
+            <div id="skip-typing" class="skip-btn" onclick="skipTyping()">SKIP >></div>
             
             {% if page.tags %}
             <div class="post-tags">
@@ -614,6 +662,101 @@
     </div>
     
     <script>
+        // Typewriter effect
+        let typingComplete = false;
+        let typingInterval = null;
+        const content = document.getElementById('typed-content');
+        const skipBtn = document.getElementById('skip-typing');
+        const originalHTML = content.innerHTML;
+        
+        function typeContent() {
+            content.innerHTML = '';
+            content.classList.add('typing');
+            
+            // Create a temporary div to parse HTML
+            const temp = document.createElement('div');
+            temp.innerHTML = originalHTML;
+            
+            // Get text content with preserved structure
+            const textNodes = [];
+            const walker = document.createTreeWalker(temp, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.textContent.trim()) {
+                    textNodes.push({
+                        text: node.textContent,
+                        parent: node.parentNode.cloneNode(false)
+                    });
+                }
+            }
+            
+            // Simple approach: type out innerHTML character by character
+            let charIndex = 0;
+            const chars = originalHTML;
+            let inTag = false;
+            let currentHTML = '';
+            
+            typingInterval = setInterval(() => {
+                if (charIndex >= chars.length) {
+                    clearInterval(typingInterval);
+                    finishTyping();
+                    return;
+                }
+                
+                const char = chars[charIndex];
+                
+                // Handle HTML tags - add them instantly
+                if (char === '<') {
+                    inTag = true;
+                }
+                
+                if (inTag) {
+                    currentHTML += char;
+                    if (char === '>') {
+                        inTag = false;
+                    }
+                    charIndex++;
+                    content.innerHTML = currentHTML + '<span class="type-cursor"></span>';
+                    return;
+                }
+                
+                // Type visible characters with delay
+                currentHTML += char;
+                charIndex++;
+                content.innerHTML = currentHTML + '<span class="type-cursor"></span>';
+                
+                // Auto-scroll to bottom
+                window.scrollTo(0, document.body.scrollHeight);
+                
+            }, 8); // Speed: lower = faster
+        }
+        
+        function skipTyping() {
+            if (typingInterval) {
+                clearInterval(typingInterval);
+            }
+            finishTyping();
+        }
+        
+        function finishTyping() {
+            typingComplete = true;
+            content.innerHTML = originalHTML;
+            content.classList.remove('typing');
+            content.classList.add('done');
+            skipBtn.classList.add('hidden');
+            window.scrollTo(0, 0);
+        }
+        
+        // Check if already visited (session storage)
+        const pageKey = 'typed_' + window.location.pathname;
+        if (sessionStorage.getItem(pageKey)) {
+            finishTyping();
+        } else {
+            sessionStorage.setItem(pageKey, 'true');
+            // Small delay before starting
+            setTimeout(typeContent, 500);
+        }
+        
         // Random glitch effect on text
         function glitchText(element) {
             const original = element.textContent;
