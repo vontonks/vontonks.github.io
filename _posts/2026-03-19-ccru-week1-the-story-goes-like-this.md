@@ -13,7 +13,7 @@ LIVING ROOM — HUSBAND is sitting on a cushion on the floor. WIFE is on the cou
 
 HUSBAND: What do you want to know?
 
-HUSBAND: The whole thing, I guess. 
+WIFE: The whole thing, I guess. 
 
 HUSBAND: I can just do the download.
 
@@ -27,7 +27,7 @@ HUSBAND: Cybernetic Culture Research Unit. So it started initially with Sadie Pl
 
 WIFE: Did you get the baby monitor?
 
-HUSBAND: Yeah she's out. Face down on the mat.
+HUSBAND: Yeah she's out. Face down on her bed.
 
 WIFE: N'awww.
 
@@ -47,7 +47,7 @@ WIFE: Right.
 
 HUSBAND: So a bit about the failure of the Situationists to change the world. It's neoliberalism and Maggie Thatcher. And Francis Fukuyama saying look, it's the end of history basically — that the neoliberal, capital, social democratic liberal world order is just so malleable and so powerful that it's going to become the standard for everything and it's unbeatable, right? That's the claim. End of history. We're there. We've finished it. This is how humanity just goes on.
 
-WIFE: Cheery.
+*Crinkling of a chocolate wrapper.*
 
 HUSBAND: So the Ccru comes out of the University of Warwick and all these other figures kind of join. And what they were trying to do — instead of doing what universities normally do, which is talk about people from a distance — they were trying to immerse themselves in digital culture, internet culture, and sort of be with it and emerge out of there. So there's a lot of techno music and experimental digital poetry and there's this sort of multimedia idea — audio, visual, all bundling together at once. They used to do these binge writing and creation sessions where the idea was that nobody could tell who wrote any single part of it. It was a collective effort. And that was the concept they were trying to bring together. You think about things like open source software — big groups making things kind of anonymously — and that's sort of what the internet is. They were trying to bring that energy to academic study in the 90s.
 
@@ -61,7 +61,7 @@ HUSBAND: Land. Yeah.
 
 WIFE: Oh okay. Not like the kids' book author, Nick Bland.
 
-HUSBAND: No, but every time I Cranky Bear I do think it's kind of funny. So anyway they did some weird stuff. It was borderline culty but they had a real big following. And you can see where the Situationist stuff comes in — they would host these conferences and there was some story about Nick Land presenting a talk on a certain type of music and he's just writhing on the floor growling into a microphone. It wasn't academic in any normal sense. So eventually there was a conflict and the uni was like — you've got to do papers and lectures. And he was not doing that.
+HUSBAND: No, but every time I see Cranky Bear I do think it's kind of funny. So anyway they did some weird stuff. It was borderline culty but they had a real big following. And you can see where the Situationist stuff comes in — they would host these conferences and there was some story about Nick Land presenting a talk on a certain type of music and he's just writhing on the floor growling into a microphone. It wasn't academic in any normal sense. So eventually there was a conflict and the uni was like — you've got to do papers and lectures. And he was not doing that.
 
 *TODDLER cries out from the other room, more emphatically than before.*
 
