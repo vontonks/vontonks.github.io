@@ -7,7 +7,7 @@ tags: [ccru, philosophy, hyperstition]
 excerpt: "Week 1 of the CCRU course. Sadie Plant, the Situationists, Nick Land writhing on the floor, and the promise of time demons."
 ---
 
-LIVING ROOM — TeddyBear83 is sitting on a cushion on the floor. xX_aGeNtScArFaCe_Xx is on the couch.
+*LIVING ROOM — TeddyBear83 is sitting on a cushion on the floor. xX_aGeNtScArFaCe_Xx is on the couch.*
 
 TeddyBear83: What do you want to know?
 
@@ -23,7 +23,7 @@ xX_aGeNtScArFaCe_Xx: Which stands for?
 
 TeddyBear83: Cybernetic Culture Research Unit. So it started initially with Sadie Plant.
 
-xX_aGeNtScArFaCe_Xx: Did you get the baby monitor?
+xX_aGeNtScArFaCe_Xx: Did you get the monitor?
 
 TeddyBear83: Yeah she's out. Face down on her bed.
 
