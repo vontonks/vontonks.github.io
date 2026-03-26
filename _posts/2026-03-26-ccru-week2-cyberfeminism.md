@@ -1,6 +1,6 @@
 ---
 layout: ccru-network
-title: "Cyberfeminism"
+title: "The Webs We Weave"
 date: 2026-03-26
 week: 2
 tags: [ccru, cyberfeminism, sadie-plant, theory]
