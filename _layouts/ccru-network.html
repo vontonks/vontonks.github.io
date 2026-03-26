@@ -566,8 +566,25 @@
     <script>
         const rawText = document.getElementById('wall-view').textContent;
         
+        // Stopwords to ignore
+        const stopwords = new Set([
+            'the', 'and', 'that', 'but', 'for', 'are', 'was', 'were', 'been',
+            'being', 'have', 'has', 'had', 'having', 'does', 'did', 'doing',
+            'will', 'would', 'could', 'should', 'might', 'must', 'shall',
+            'this', 'these', 'those', 'what', 'which', 'who', 'whom', 'whose',
+            'where', 'when', 'why', 'how', 'all', 'each', 'every', 'both',
+            'few', 'more', 'most', 'other', 'some', 'such', 'than', 'too',
+            'very', 'just', 'only', 'own', 'same', 'into', 'with', 'from',
+            'about', 'against', 'between', 'through', 'during', 'before',
+            'after', 'above', 'below', 'under', 'again', 'further', 'then',
+            'once', 'here', 'there', 'any', 'can', 'not', 'out', 'over',
+            'they', 'them', 'their', 'you', 'your', 'its', 'his', 'her',
+            'she', 'him', 'our', 'ours', 'yours', 'hers', 'its', 'theirs'
+        ]);
+        
         // Parse text into words
-        const words = rawText.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+        const allWords = rawText.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/).filter(w => w.length > 0);
+        const words = allWords.filter(w => w.length > 2 && !stopwords.has(w));
         const uniqueWords = [...new Set(words)];
         
         // Build adjacency map
@@ -623,8 +640,8 @@
         document.getElementById('stats').innerHTML = `
             NODES: ${nodes.length} | 
             EDGES: ${links.length} | 
-            TOTAL WORDS: ${words.length} |
-            UNIQUE: ${uniqueWords.length}
+            TOTAL WORDS: ${allWords.length} |
+            UNIQUE: ${uniqueWords.length} (stopwords filtered)
         `;
         
         // Initialize network (but don't render until needed)
