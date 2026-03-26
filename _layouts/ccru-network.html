@@ -371,6 +371,117 @@
             stroke-opacity: 1;
         }
         
+        /* Settings panel */
+        .settings-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            font-size: 0.8em;
+            width: 220px;
+            z-index: 100;
+            display: none;
+        }
+        
+        .settings-panel.visible {
+            display: block;
+        }
+        
+        .settings-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 5px 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75em;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        .settings-toggle:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .settings-panel h4 {
+            color: var(--neon-green);
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        
+        .setting-group {
+            margin-bottom: 15px;
+        }
+        
+        .setting-group label {
+            display: block;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .setting-group input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            background: var(--border-color);
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+        }
+        
+        .setting-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .setting-group input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--neon-green);
+        }
+        
+        .setting-group .value {
+            color: var(--neon-green);
+            font-size: 0.85em;
+            float: right;
+        }
+        
+        .setting-group.checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .setting-group.checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-dim);
+            padding: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85em;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
         /* Info panel */
         .info-panel {
             position: fixed;
@@ -539,7 +650,44 @@
             <h1>{{ page.title }}</h1>
             
             <div id="wall-view">{{ page.raw_text }}</div>
-            <div id="network-view" class="hidden"></div>
+            <div id="network-view" class="hidden">
+                <button class="settings-toggle" onclick="toggleSettings()">⚙ SETTINGS</button>
+                <div class="settings-panel" id="settings-panel">
+                    <h4>// NETWORK CONTROLS</h4>
+                    
+                    <div class="setting-group">
+                        <label>CHARGE STRENGTH <span class="value" id="charge-value">-30</span></label>
+                        <input type="range" id="charge-slider" min="-150" max="0" value="-30">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>LINK DISTANCE <span class="value" id="link-value">50</span></label>
+                        <input type="range" id="link-slider" min="20" max="150" value="50">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>CENTER PULL <span class="value" id="center-value">0.05</span></label>
+                        <input type="range" id="center-slider" min="0" max="20" value="5">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>MIN CONNECTIONS <span class="value" id="minconn-value">2</span></label>
+                        <input type="range" id="minconn-slider" min="1" max="5" value="2">
+                    </div>
+                    
+                    <div class="setting-group checkbox-group">
+                        <input type="checkbox" id="stopwords-toggle" checked>
+                        <label for="stopwords-toggle">FILTER STOPWORDS</label>
+                    </div>
+                    
+                    <div class="setting-group checkbox-group">
+                        <input type="checkbox" id="labels-toggle">
+                        <label for="labels-toggle">SHOW ALL LABELS</label>
+                    </div>
+                    
+                    <button class="reset-btn" onclick="resetSettings()">RESET DEFAULTS</button>
+                </div>
+            </div>
             
             <div class="info-panel" id="info-panel">
                 <h3 id="selected-word"></h3>
@@ -566,7 +714,7 @@
     <script>
         const rawText = document.getElementById('wall-view').textContent;
         
-        // Minimal stopwords - just articles/conjunctions/prepositions, keep pronouns
+        // Stopwords
         const stopwords = new Set([
             'the', 'and', 'but', 'for', 'are', 'was', 'were',
             'have', 'has', 'had', 'does', 'did',
@@ -576,102 +724,122 @@
             'also', 'just', 'only', 'very', 'then', 'there'
         ]);
         
-        // Parse text into words
+        // Parse all words
         const allWords = rawText.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/).filter(w => w.length > 0);
-        const words = allWords.filter(w => w.length > 2 && !stopwords.has(w));
-        const uniqueWords = [...new Set(words)];
         
-        // Build adjacency map
-        const adjacency = {};
-        const wordFrequency = {};
+        // Settings
+        let settings = {
+            chargeStrength: -30,
+            linkDistance: 50,
+            centerPull: 0.05,
+            minConnections: 2,
+            filterStopwords: true,
+            showAllLabels: false
+        };
         
-        words.forEach((word, i) => {
-            wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+        // Network state
+        let simulation = null;
+        let svg = null;
+        let width, height;
+        let currentNodes = [];
+        let currentLinks = [];
+        let adjacency = {};
+        let nodeIds = new Set();
+        
+        function buildNetworkData() {
+            const words = allWords.filter(w => w.length > 2 && (!settings.filterStopwords || !stopwords.has(w)));
+            const uniqueWords = [...new Set(words)];
             
-            if (i > 0) {
-                const prev = words[i - 1];
-                if (!adjacency[prev]) adjacency[prev] = {};
-                adjacency[prev][word] = (adjacency[prev][word] || 0) + 1;
-            }
-            if (i < words.length - 1) {
-                const next = words[i + 1];
-                if (!adjacency[word]) adjacency[word] = {};
-                adjacency[word][next] = (adjacency[word][next] || 0) + 1;
-            }
-        });
-        
-        // Filter words for visualization
-        const minConnections = 1;
-        const filteredWords = uniqueWords.filter(word => {
-            const connections = Object.keys(adjacency[word] || {}).length;
-            return connections >= minConnections || wordFrequency[word] >= 3;
-        });
-        
-        // Build nodes and links
-        const nodes = filteredWords.map(word => ({
-            id: word,
-            frequency: wordFrequency[word],
-            connections: Object.keys(adjacency[word] || {}).length
-        }));
-        
-        const nodeIds = new Set(filteredWords);
-        const links = [];
-        
-        filteredWords.forEach(word => {
-            const adj = adjacency[word] || {};
-            Object.entries(adj).forEach(([target, weight]) => {
-                if (nodeIds.has(target) && word < target) {
-                    links.push({
-                        source: word,
-                        target: target,
-                        weight: weight
-                    });
+            adjacency = {};
+            const wordFrequency = {};
+            
+            words.forEach((word, i) => {
+                wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+                
+                if (i > 0) {
+                    const prev = words[i - 1];
+                    if (!adjacency[prev]) adjacency[prev] = {};
+                    adjacency[prev][word] = (adjacency[prev][word] || 0) + 1;
+                }
+                if (i < words.length - 1) {
+                    const next = words[i + 1];
+                    if (!adjacency[word]) adjacency[word] = {};
+                    adjacency[word][next] = (adjacency[word][next] || 0) + 1;
                 }
             });
-        });
+            
+            const filteredWords = uniqueWords.filter(word => {
+                const connections = Object.keys(adjacency[word] || {}).length;
+                return connections >= settings.minConnections || wordFrequency[word] >= 3;
+            });
+            
+            currentNodes = filteredWords.map(word => ({
+                id: word,
+                frequency: wordFrequency[word],
+                connections: Object.keys(adjacency[word] || {}).length
+            }));
+            
+            nodeIds = new Set(filteredWords);
+            currentLinks = [];
+            
+            filteredWords.forEach(word => {
+                const adj = adjacency[word] || {};
+                Object.entries(adj).forEach(([target, weight]) => {
+                    if (nodeIds.has(target) && word < target) {
+                        currentLinks.push({
+                            source: word,
+                            target: target,
+                            weight: weight
+                        });
+                    }
+                });
+            });
+            
+            updateStats();
+        }
         
-        // Stats
-        document.getElementById('stats').innerHTML = `
-            NODES: ${nodes.length} | 
-            EDGES: ${links.length} | 
-            TOTAL WORDS: ${allWords.length} |
-            UNIQUE: ${uniqueWords.length} (stopwords filtered)
-        `;
-        
-        // Initialize network (but don't render until needed)
-        let networkInitialized = false;
-        let simulation = null;
+        function updateStats() {
+            document.getElementById('stats').innerHTML = `
+                NODES: ${currentNodes.length} | 
+                EDGES: ${currentLinks.length} | 
+                TOTAL WORDS: ${allWords.length}
+            `;
+        }
         
         function initNetwork() {
-            if (networkInitialized) return;
-            networkInitialized = true;
-            
             const networkContainer = document.getElementById('network-view');
-            const width = networkContainer.clientWidth || 1000;
-            const height = networkContainer.clientHeight || 500;
+            width = networkContainer.clientWidth || 1000;
+            height = networkContainer.clientHeight || 500;
             
-            const svg = d3.select('#network-view')
+            // Clear existing
+            d3.select('#network-view svg').remove();
+            
+            buildNetworkData();
+            
+            svg = d3.select('#network-view')
                 .append('svg')
                 .attr('viewBox', [0, 0, width, height]);
             
-            simulation = d3.forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id(d => d.id).distance(50))
-                .force('charge', d3.forceManyBody().strength(-30))
+            simulation = d3.forceSimulation(currentNodes)
+                .force('link', d3.forceLink(currentLinks).id(d => d.id).distance(settings.linkDistance))
+                .force('charge', d3.forceManyBody().strength(settings.chargeStrength))
                 .force('center', d3.forceCenter(width / 2, height / 2))
                 .force('collision', d3.forceCollide().radius(d => Math.sqrt(d.frequency) * 3 + 5))
-                .force('x', d3.forceX(width / 2).strength(0.05))
-                .force('y', d3.forceY(height / 2).strength(0.05));
+                .force('x', d3.forceX(width / 2).strength(settings.centerPull))
+                .force('y', d3.forceY(height / 2).strength(settings.centerPull));
             
             const link = svg.append('g')
+                .attr('class', 'links')
                 .selectAll('line')
-                .data(links)
+                .data(currentLinks)
                 .join('line')
                 .attr('class', 'link')
                 .attr('stroke-width', d => Math.sqrt(d.weight));
             
             const node = svg.append('g')
+                .attr('class', 'nodes')
                 .selectAll('g')
-                .data(nodes)
+                .data(currentNodes)
                 .join('g')
                 .attr('class', 'node')
                 .call(d3.drag()
@@ -685,23 +853,34 @@
             node.append('text')
                 .text(d => d.id)
                 .attr('dx', d => Math.sqrt(d.frequency) * 3 + 6)
-                .attr('dy', 3);
+                .attr('dy', 3)
+                .style('opacity', settings.showAllLabels ? 1 : 0);
             
             // Hover interactions
             node.on('mouseover', function(event, d) {
                 d3.select(this).classed('highlighted', true);
+                d3.select(this).select('text').style('opacity', 1);
                 
                 const connectedNodes = new Set();
-                links.forEach(l => {
-                    if (l.source.id === d.id) connectedNodes.add(l.target.id);
-                    if (l.target.id === d.id) connectedNodes.add(l.source.id);
+                currentLinks.forEach(l => {
+                    const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                    const targetId = typeof l.target === 'object' ? l.target.id : l.target;
+                    if (sourceId === d.id) connectedNodes.add(targetId);
+                    if (targetId === d.id) connectedNodes.add(sourceId);
                 });
                 
-                link.classed('highlighted', l => 
-                    l.source.id === d.id || l.target.id === d.id
-                );
+                svg.selectAll('.link').classed('highlighted', l => {
+                    const sourceId = typeof l.source === 'object' ? l.source.id : l.source;
+                    const targetId = typeof l.target === 'object' ? l.target.id : l.target;
+                    return sourceId === d.id || targetId === d.id;
+                });
                 
-                node.classed('highlighted', n => connectedNodes.has(n.id));
+                svg.selectAll('.node').classed('highlighted', n => connectedNodes.has(n.id));
+                svg.selectAll('.node').each(function(n) {
+                    if (connectedNodes.has(n.id)) {
+                        d3.select(this).select('text').style('opacity', 1);
+                    }
+                });
                 
                 const panel = document.getElementById('info-panel');
                 const adj = adjacency[d.id] || {};
@@ -719,8 +898,11 @@
             });
             
             node.on('mouseout', function() {
-                node.classed('highlighted', false);
-                link.classed('highlighted', false);
+                svg.selectAll('.node').classed('highlighted', false);
+                svg.selectAll('.link').classed('highlighted', false);
+                if (!settings.showAllLabels) {
+                    svg.selectAll('.node text').style('opacity', 0);
+                }
                 document.getElementById('info-panel').classList.remove('visible');
             });
             
@@ -752,6 +934,86 @@
             }
         }
         
+        function updateForces() {
+            if (!simulation) return;
+            
+            simulation
+                .force('charge', d3.forceManyBody().strength(settings.chargeStrength))
+                .force('link').distance(settings.linkDistance);
+            simulation
+                .force('x', d3.forceX(width / 2).strength(settings.centerPull))
+                .force('y', d3.forceY(height / 2).strength(settings.centerPull));
+            
+            simulation.alpha(0.5).restart();
+        }
+        
+        // Settings UI
+        function toggleSettings() {
+            document.getElementById('settings-panel').classList.toggle('visible');
+        }
+        
+        function resetSettings() {
+            settings = {
+                chargeStrength: -30,
+                linkDistance: 50,
+                centerPull: 0.05,
+                minConnections: 2,
+                filterStopwords: true,
+                showAllLabels: false
+            };
+            
+            document.getElementById('charge-slider').value = -30;
+            document.getElementById('link-slider').value = 50;
+            document.getElementById('center-slider').value = 5;
+            document.getElementById('minconn-slider').value = 2;
+            document.getElementById('stopwords-toggle').checked = true;
+            document.getElementById('labels-toggle').checked = false;
+            
+            document.getElementById('charge-value').textContent = '-30';
+            document.getElementById('link-value').textContent = '50';
+            document.getElementById('center-value').textContent = '0.05';
+            document.getElementById('minconn-value').textContent = '2';
+            
+            initNetwork();
+        }
+        
+        // Slider events
+        document.getElementById('charge-slider').addEventListener('input', (e) => {
+            settings.chargeStrength = parseInt(e.target.value);
+            document.getElementById('charge-value').textContent = e.target.value;
+            updateForces();
+        });
+        
+        document.getElementById('link-slider').addEventListener('input', (e) => {
+            settings.linkDistance = parseInt(e.target.value);
+            document.getElementById('link-value').textContent = e.target.value;
+            updateForces();
+        });
+        
+        document.getElementById('center-slider').addEventListener('input', (e) => {
+            settings.centerPull = parseInt(e.target.value) / 100;
+            document.getElementById('center-value').textContent = settings.centerPull.toFixed(2);
+            updateForces();
+        });
+        
+        document.getElementById('minconn-slider').addEventListener('input', (e) => {
+            settings.minConnections = parseInt(e.target.value);
+            document.getElementById('minconn-value').textContent = e.target.value;
+            initNetwork();
+        });
+        
+        document.getElementById('stopwords-toggle').addEventListener('change', (e) => {
+            settings.filterStopwords = e.target.checked;
+            initNetwork();
+        });
+        
+        document.getElementById('labels-toggle').addEventListener('change', (e) => {
+            settings.showAllLabels = e.target.checked;
+            if (svg) {
+                svg.selectAll('.node text').style('opacity', settings.showAllLabels ? 1 : 0);
+            }
+        });
+        
         // Mode toggle
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -766,10 +1028,12 @@
                     document.getElementById('wall-view').classList.add('hidden');
                     document.getElementById('network-view').classList.remove('hidden');
                     initNetwork();
-                    if (simulation) simulation.alpha(0.3).restart();
                 }
             });
         });
+        
+        // Initialize stats
+        buildNetworkData();
     </script>
 </body>
 </html>
