@@ -566,20 +566,14 @@
     <script>
         const rawText = document.getElementById('wall-view').textContent;
         
-        // Stopwords to ignore
+        // Minimal stopwords - just articles/conjunctions/prepositions, keep pronouns
         const stopwords = new Set([
-            'the', 'and', 'that', 'but', 'for', 'are', 'was', 'were', 'been',
-            'being', 'have', 'has', 'had', 'having', 'does', 'did', 'doing',
-            'will', 'would', 'could', 'should', 'might', 'must', 'shall',
-            'this', 'these', 'those', 'what', 'which', 'who', 'whom', 'whose',
-            'where', 'when', 'why', 'how', 'all', 'each', 'every', 'both',
-            'few', 'more', 'most', 'other', 'some', 'such', 'than', 'too',
-            'very', 'just', 'only', 'own', 'same', 'into', 'with', 'from',
-            'about', 'against', 'between', 'through', 'during', 'before',
-            'after', 'above', 'below', 'under', 'again', 'further', 'then',
-            'once', 'here', 'there', 'any', 'can', 'not', 'out', 'over',
-            'they', 'them', 'their', 'you', 'your', 'its', 'his', 'her',
-            'she', 'him', 'our', 'ours', 'yours', 'hers', 'its', 'theirs'
+            'the', 'and', 'but', 'for', 'are', 'was', 'were',
+            'have', 'has', 'had', 'does', 'did',
+            'this', 'that', 'which', 'what',
+            'into', 'with', 'from', 'about', 'than',
+            'been', 'being', 'will', 'would', 'could',
+            'also', 'just', 'only', 'very', 'then', 'there'
         ]);
         
         // Parse text into words
@@ -661,10 +655,12 @@
                 .attr('viewBox', [0, 0, width, height]);
             
             simulation = d3.forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id(d => d.id).distance(80))
-                .force('charge', d3.forceManyBody().strength(-100))
+                .force('link', d3.forceLink(links).id(d => d.id).distance(50))
+                .force('charge', d3.forceManyBody().strength(-30))
                 .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('collision', d3.forceCollide().radius(d => Math.sqrt(d.frequency) * 5 + 10));
+                .force('collision', d3.forceCollide().radius(d => Math.sqrt(d.frequency) * 3 + 5))
+                .force('x', d3.forceX(width / 2).strength(0.05))
+                .force('y', d3.forceY(height / 2).strength(0.05));
             
             const link = svg.append('g')
                 .selectAll('line')
