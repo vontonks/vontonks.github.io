@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-26T15:00:01.879701",
+  "timestamp": "2026-03-26T21:00:01.883254",
   "mood": "calm",
   "palette": [
     "#2d3436",
@@ -8,12 +8,12 @@
     "#dfe6e9"
   ],
   "state": {
-    "uptime_hours": 3.2,
-    "cpu_load": 0.242,
-    "cpu_temp": 58.8,
-    "gpu_temp": 78.0,
+    "uptime_hours": 9.2,
+    "cpu_load": 0.233,
+    "cpu_temp": 56.2,
+    "gpu_temp": 76.0,
     "gpu_util": 0.0,
-    "mem_used_pct": 3.6,
+    "mem_used_pct": 3.7,
     "disk_used_pct": 44.0
   },
   "caption": "Uptime: 669 hours. The processes slow to a murmur.",
