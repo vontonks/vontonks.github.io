@@ -607,7 +607,7 @@
         });
         
         // Filter words for visualization
-        const minConnections = 2;
+        const minConnections = 1;
         const filteredWords = uniqueWords.filter(word => {
             const connections = Object.keys(adjacency[word] || {}).length;
             return connections >= minConnections || wordFrequency[word] >= 3;
