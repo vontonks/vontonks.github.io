@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | CCRU Notes</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-green: #0f0;
+            --neon-green-dim: #0a0;
+            --neon-green-bright: #5f5;
+            --neon-red: #f00;
+            --dark-bg: #000;
+            --darker-bg: #000;
+            --text-color: #0f0;
+            --text-dim: #070;
+            --text-bright: #5f5;
+            --border-color: #0a0;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* CRT screen effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.15),
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                radial-gradient(
+                    ellipse at center,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.4) 100%
+                );
+            z-index: 9999;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { 
+                text-shadow: 2px 0 var(--neon-green), -2px 0 var(--neon-green-dim);
+                transform: translateX(0);
+            }
+            20% { 
+                text-shadow: -3px 0 var(--neon-green), 3px 0 var(--neon-green-dim);
+                transform: translateX(-2px);
+            }
+            40% { 
+                text-shadow: 2px 2px var(--neon-green), -2px -2px var(--neon-green-dim);
+                transform: translateX(2px);
+            }
+            60% { 
+                text-shadow: -2px 2px var(--neon-green), 2px -2px var(--neon-green-dim);
+                transform: translateX(0);
+            }
+            80% {
+                text-shadow: 0 0 var(--neon-green), 0 0 var(--neon-green);
+                transform: translateX(1px);
+            }
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.7; }
+            94% { opacity: 1; }
+            95% { opacity: 0.9; }
+            96% { opacity: 1; }
+            97% { opacity: 0.8; }
+            98% { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes drift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Floating sigil background */
+        .sigil-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .sigil {
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.03;
+            color: var(--neon-green);
+            animation: drift 25s ease-in-out infinite, pulse 6s ease-in-out infinite;
+        }
+        
+        .sigil:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .sigil:nth-child(2) { top: 60%; right: 10%; animation-delay: -5s; }
+        .sigil:nth-child(3) { bottom: 20%; left: 15%; animation-delay: -10s; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Warning beacon */
+        .warning-beacon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 0.7em;
+            color: var(--neon-red);
+            letter-spacing: 2px;
+            animation: flicker 2s infinite, pulse 4s infinite;
+            z-index: 100;
+        }
+        
+        .warning-beacon::before {
+            content: '⚠ ';
+        }
+        
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            margin-bottom: 40px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            animation: flicker 3s infinite;
+        }
+        
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .site-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: var(--neon-green);
+            text-decoration: none;
+            letter-spacing: 3px;
+            animation: glitch 8s infinite;
+            display: inline-block;
+        }
+        
+        .site-title:hover {
+            color: var(--neon-green-bright);
+            text-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        /* Mode toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .mode-btn {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 10px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        .mode-btn:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .mode-btn.active {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+        
+        /* Post meta */
+        .post-meta {
+            color: var(--neon-green);
+            font-size: 0.85em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .post-meta .week-num {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            padding: 2px 8px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: var(--neon-green);
+            margin-bottom: 30px;
+            line-height: 1.3;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glitch 10s infinite;
+        }
+        
+        /* Article */
+        article {
+            background: var(--darker-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            position: relative;
+        }
+        
+        article::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        /* Wall view */
+        #wall-view {
+            line-height: 1.3;
+            font-size: 14px;
+            color: var(--text-dim);
+            text-align: justify;
+            word-spacing: -1px;
+            letter-spacing: -0.3px;
+        }
+        
+        #wall-view.hidden {
+            display: none;
+        }
+        
+        /* Network view */
+        #network-view {
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            border: 1px solid var(--border-color);
+        }
+        
+        #network-view.hidden {
+            display: none;
+        }
+        
+        #network-view svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node {
+            cursor: pointer;
+        }
+        
+        .node circle {
+            fill: var(--neon-green-dim);
+            stroke: var(--neon-green);
+            stroke-width: 1px;
+            transition: all 0.3s;
+        }
+        
+        .node:hover circle {
+            fill: var(--neon-green);
+            stroke: var(--neon-green-bright);
+            stroke-width: 2px;
+        }
+        
+        .node.highlighted circle {
+            fill: var(--neon-green);
+            stroke: var(--neon-green-bright);
+            stroke-width: 2px;
+            filter: drop-shadow(0 0 10px var(--neon-green));
+        }
+        
+        .node text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            fill: var(--neon-green);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .node:hover text,
+        .node.highlighted text {
+            opacity: 1;
+        }
+        
+        .link {
+            stroke: var(--text-dim);
+            stroke-opacity: 0.3;
+            transition: all 0.3s;
+        }
+        
+        .link.highlighted {
+            stroke: var(--neon-green);
+            stroke-opacity: 1;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            font-size: 0.85em;
+            max-width: 300px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .info-panel.visible {
+            display: block;
+        }
+        
+        .info-panel h3 {
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+        }
+        
+        .info-panel .connections {
+            color: var(--text-dim);
+            font-size: 0.9em;
+        }
+        
+        /* Stats */
+        .stats {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8em;
+            color: var(--text-dim);
+        }
+        
+        /* Tags */
+        .post-tags {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .tag {
+            display: inline-block;
+            background: transparent;
+            color: var(--neon-green);
+            padding: 4px 12px;
+            margin-right: 8px;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            border: 1px solid var(--neon-green);
+            transition: all 0.3s;
+        }
+        
+        .tag:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85em;
+            color: var(--text-dim);
+        }
+        
+        footer a {
+            color: var(--neon-green);
+            text-decoration: none;
+        }
+        
+        .terminal-prompt {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: var(--neon-green);
+        }
+        
+        .terminal-prompt::before {
+            content: '> ';
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background: var(--neon-green);
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            article {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .site-title {
+                font-size: 1.2em;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .warning-beacon {
+                display: none;
+            }
+            
+            #network-view {
+                height: 50vh;
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background sigils -->
+    <div class="sigil-bg">
+        <div class="sigil">◎</div>
+        <div class="sigil">⍟</div>
+        <div class="sigil">⎔</div>
+    </div>
+    
+    <!-- Warning beacon -->
+    <div class="warning-beacon">HYPERSTITION ACTIVE</div>
+    
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <a href="/ccru/" class="site-title">CCRU_NOTES</a>
+                <nav>
+                    <a href="/">HOME</a>
+                    <a href="/ccru/">INDEX</a>
+                    <a href="/blog.html">BLOG</a>
+                </nav>
+            </div>
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="wall">WALL</button>
+                <button class="mode-btn" data-mode="network">NETWORK</button>
+            </div>
+        </header>
+        
+        <article>
+            <div class="post-meta">
+                {% if page.week %}<span class="week-num">WEEK {{ page.week }}</span>{% endif %}
+                <span>{{ page.date | date: "%Y.%m.%d" }}</span>
+            </div>
+            
+            <h1>{{ page.title }}</h1>
+            
+            <div id="wall-view">{{ page.raw_text }}</div>
+            <div id="network-view" class="hidden"></div>
+            
+            <div class="info-panel" id="info-panel">
+                <h3 id="selected-word"></h3>
+                <div class="connections" id="connections"></div>
+            </div>
+            
+            <div class="stats" id="stats"></div>
+            
+            {% if page.tags %}
+            <div class="post-tags">
+                {% for tag in page.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </article>
+        
+        <footer>
+            <p>[ <a href="/">CASEY TONKIN</a> ] // CCRU Course Notes // MSCP 2026</p>
+            <div class="terminal-prompt">END TRANSMISSION<span class="cursor"></span></div>
+        </footer>
+    </div>
+    
+    <script>
+        const rawText = document.getElementById('wall-view').textContent;
+        
+        // Parse text into words
+        const words = rawText.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+        const uniqueWords = [...new Set(words)];
+        
+        // Build adjacency map
+        const adjacency = {};
+        const wordFrequency = {};
+        
+        words.forEach((word, i) => {
+            wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+            
+            if (i > 0) {
+                const prev = words[i - 1];
+                if (!adjacency[prev]) adjacency[prev] = {};
+                adjacency[prev][word] = (adjacency[prev][word] || 0) + 1;
+            }
+            if (i < words.length - 1) {
+                const next = words[i + 1];
+                if (!adjacency[word]) adjacency[word] = {};
+                adjacency[word][next] = (adjacency[word][next] || 0) + 1;
+            }
+        });
+        
+        // Filter words for visualization
+        const minConnections = 2;
+        const filteredWords = uniqueWords.filter(word => {
+            const connections = Object.keys(adjacency[word] || {}).length;
+            return connections >= minConnections || wordFrequency[word] >= 3;
+        });
+        
+        // Build nodes and links
+        const nodes = filteredWords.map(word => ({
+            id: word,
+            frequency: wordFrequency[word],
+            connections: Object.keys(adjacency[word] || {}).length
+        }));
+        
+        const nodeIds = new Set(filteredWords);
+        const links = [];
+        
+        filteredWords.forEach(word => {
+            const adj = adjacency[word] || {};
+            Object.entries(adj).forEach(([target, weight]) => {
+                if (nodeIds.has(target) && word < target) {
+                    links.push({
+                        source: word,
+                        target: target,
+                        weight: weight
+                    });
+                }
+            });
+        });
+        
+        // Stats
+        document.getElementById('stats').innerHTML = `
+            NODES: ${nodes.length} | 
+            EDGES: ${links.length} | 
+            TOTAL WORDS: ${words.length} |
+            UNIQUE: ${uniqueWords.length}
+        `;
+        
+        // Initialize network (but don't render until needed)
+        let networkInitialized = false;
+        let simulation = null;
+        
+        function initNetwork() {
+            if (networkInitialized) return;
+            networkInitialized = true;
+            
+            const networkContainer = document.getElementById('network-view');
+            const width = networkContainer.clientWidth || 1000;
+            const height = networkContainer.clientHeight || 500;
+            
+            const svg = d3.select('#network-view')
+                .append('svg')
+                .attr('viewBox', [0, 0, width, height]);
+            
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(80))
+                .force('charge', d3.forceManyBody().strength(-100))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(d => Math.sqrt(d.frequency) * 5 + 10));
+            
+            const link = svg.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('class', 'link')
+                .attr('stroke-width', d => Math.sqrt(d.weight));
+            
+            const node = svg.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .attr('class', 'node')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            node.append('circle')
+                .attr('r', d => Math.sqrt(d.frequency) * 3 + 3);
+            
+            node.append('text')
+                .text(d => d.id)
+                .attr('dx', d => Math.sqrt(d.frequency) * 3 + 6)
+                .attr('dy', 3);
+            
+            // Hover interactions
+            node.on('mouseover', function(event, d) {
+                d3.select(this).classed('highlighted', true);
+                
+                const connectedNodes = new Set();
+                links.forEach(l => {
+                    if (l.source.id === d.id) connectedNodes.add(l.target.id);
+                    if (l.target.id === d.id) connectedNodes.add(l.source.id);
+                });
+                
+                link.classed('highlighted', l => 
+                    l.source.id === d.id || l.target.id === d.id
+                );
+                
+                node.classed('highlighted', n => connectedNodes.has(n.id));
+                
+                const panel = document.getElementById('info-panel');
+                const adj = adjacency[d.id] || {};
+                const connectionList = Object.entries(adj)
+                    .filter(([word]) => nodeIds.has(word))
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10)
+                    .map(([word, count]) => `${word} (${count})`)
+                    .join(', ');
+                
+                document.getElementById('selected-word').textContent = d.id.toUpperCase();
+                document.getElementById('connections').textContent = 
+                    connectionList || 'No filtered connections';
+                panel.classList.add('visible');
+            });
+            
+            node.on('mouseout', function() {
+                node.classed('highlighted', false);
+                link.classed('highlighted', false);
+                document.getElementById('info-panel').classList.remove('visible');
+            });
+            
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+            
+            function dragstarted(event) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+            
+            function dragged(event) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+            
+            function dragended(event) {
+                if (!event.active) simulation.alphaTarget(0);
+                event.subject.fx = null;
+                event.subject.fy = null;
+            }
+        }
+        
+        // Mode toggle
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const mode = btn.dataset.mode;
+                if (mode === 'wall') {
+                    document.getElementById('wall-view').classList.remove('hidden');
+                    document.getElementById('network-view').classList.add('hidden');
+                } else {
+                    document.getElementById('wall-view').classList.add('hidden');
+                    document.getElementById('network-view').classList.remove('hidden');
+                    initNetwork();
+                    if (simulation) simulation.alpha(0.3).restart();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
