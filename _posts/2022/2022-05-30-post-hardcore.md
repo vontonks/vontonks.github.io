@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: vonlayout
 title: "Post-Hardcore"
 date: 2022-05-30
 author: Casey Tonkin

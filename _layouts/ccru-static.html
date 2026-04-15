@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | CCRU Notes</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-green: #0f0;
+            --neon-green-dim: #0a0;
+            --neon-green-bright: #5f5;
+            --neon-red: #f00;
+            --dark-bg: #000;
+            --darker-bg: #000;
+            --text-color: #0f0;
+            --text-dim: #070;
+            --text-bright: #5f5;
+            --border-color: #0a0;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* CRT screen effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.15),
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                radial-gradient(
+                    ellipse at center,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.4) 100%
+                );
+            z-index: 9999;
+        }
+
+        /* Static noise overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 9998;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            animation: staticFlicker 0.1s infinite;
+        }
+
+        @keyframes staticFlicker {
+            0%, 100% { opacity: 0.03; }
+            50% { opacity: 0.05; }
+        }
+
+        /* Glitch animation */
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 2px 0 var(--neon-green), -2px 0 var(--neon-green-dim);
+                transform: translateX(0);
+            }
+            20% {
+                text-shadow: -3px 0 var(--neon-green), 3px 0 var(--neon-green-dim);
+                transform: translateX(-2px);
+            }
+            40% {
+                text-shadow: 2px 2px var(--neon-green), -2px -2px var(--neon-green-dim);
+                transform: translateX(2px);
+            }
+            60% {
+                text-shadow: -2px 2px var(--neon-green), 2px -2px var(--neon-green-dim);
+                transform: translateX(0);
+            }
+            80% {
+                text-shadow: 0 0 var(--neon-green), 0 0 var(--neon-green);
+                transform: translateX(1px);
+            }
+        }
+
+        @keyframes glitchHard {
+            0%, 90%, 100% {
+                clip-path: inset(0 0 0 0);
+                transform: translateX(0);
+            }
+            92% {
+                clip-path: inset(10% 0 60% 0);
+                transform: translateX(-5px);
+            }
+            94% {
+                clip-path: inset(40% 0 20% 0);
+                transform: translateX(5px);
+            }
+            96% {
+                clip-path: inset(70% 0 5% 0);
+                transform: translateX(-3px);
+            }
+            98% {
+                clip-path: inset(5% 0 80% 0);
+                transform: translateX(3px);
+            }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.7; }
+            94% { opacity: 1; }
+            95% { opacity: 0.9; }
+            96% { opacity: 1; }
+            97% { opacity: 0.8; }
+            98% { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes colorShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(20deg); }
+        }
+
+        /* Floating sigil background */
+        .sigil-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .sigil {
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.03;
+            color: var(--neon-green);
+            animation: drift 25s ease-in-out infinite, pulse 6s ease-in-out infinite;
+        }
+
+        .sigil:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .sigil:nth-child(2) { top: 60%; right: 10%; animation-delay: -5s; }
+        .sigil:nth-child(3) { bottom: 20%; left: 15%; animation-delay: -10s; }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Warning beacon */
+        .warning-beacon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 0.7em;
+            color: var(--neon-red);
+            letter-spacing: 2px;
+            animation: flicker 2s infinite, pulse 4s infinite;
+            z-index: 100;
+        }
+
+        .warning-beacon::before {
+            content: '⚠ ';
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--neon-cyan);
+            padding: 20px 0;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            animation: flicker 3s infinite;
+        }
+
+        .site-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: var(--neon-green);
+            text-decoration: none;
+            letter-spacing: 3px;
+            animation: glitch 8s infinite;
+            display: inline-block;
+        }
+
+        .site-title:hover {
+            color: var(--neon-green-bright);
+            text-shadow: 0 0 20px var(--neon-green);
+            animation: glitchHard 0.3s infinite;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            transition: color 0.3s, text-shadow 0.3s;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '>';
+            opacity: 0;
+            margin-right: 4px;
+            transition: opacity 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        /* Article */
+        article {
+            background: var(--darker-bg);
+            border: 1px solid #1a1a2e;
+            padding: 40px;
+            position: relative;
+        }
+
+        article::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* Corrupted data fragments */
+        .corruption {
+            position: absolute;
+            font-size: 0.6em;
+            color: var(--neon-green);
+            opacity: 0.15;
+            font-family: monospace;
+            white-space: nowrap;
+            animation: flicker 1s infinite;
+            pointer-events: none;
+        }
+
+        .corruption-1 { top: 80px; right: 20px; }
+        .corruption-2 { bottom: 100px; left: 10px; }
+
+        .post-meta {
+            color: var(--neon-cyan);
+            font-size: 0.85em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .post-meta .week-num {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            padding: 2px 8px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: var(--neon-green);
+            margin-bottom: 30px;
+            line-height: 1.3;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glitch 10s infinite;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            color: var(--neon-green);
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        h2::before {
+            content: '//';
+            margin-right: 8px;
+            opacity: 0.5;
+        }
+
+        h3 {
+            font-size: 1.1em;
+            color: var(--neon-green-bright);
+            margin: 30px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        /* Scramble effect on hover for links */
+        a {
+            color: var(--neon-green);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s, text-shadow 0.3s;
+        }
+
+        a:hover {
+            border-bottom-color: var(--neon-green);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        blockquote {
+            border-left: 3px solid var(--neon-green);
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: var(--text-bright);
+            background: rgba(0, 255, 0, 0.03);
+            position: relative;
+        }
+
+        blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 3em;
+            color: var(--neon-green);
+            opacity: 0.3;
+        }
+
+        code {
+            font-family: 'Share Tech Mono', monospace;
+            background: #1a1a2e;
+            padding: 2px 6px;
+            color: var(--neon-green);
+        }
+
+        pre {
+            background: #1a1a2e;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 3px solid var(--neon-green);
+            position: relative;
+        }
+
+        pre::before {
+            content: 'OUTPUT';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7em;
+            color: var(--neon-green);
+            opacity: 0.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        li::marker {
+            color: var(--neon-green);
+        }
+
+        /* Horizontal rule as signal break */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            margin: 40px 0;
+            position: relative;
+        }
+
+        hr::after {
+            content: '◆ SIGNAL BREAK ◆';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--darker-bg);
+            padding: 0 15px;
+            font-size: 0.7em;
+            color: var(--neon-green);
+            letter-spacing: 3px;
+            opacity: 0.5;
+        }
+
+        /* Tags */
+        .post-tags {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tag {
+            display: inline-block;
+            background: transparent;
+            color: var(--neon-green);
+            padding: 4px 12px;
+            margin-right: 8px;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            border: 1px solid var(--neon-green);
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85em;
+            color: var(--text-dim);
+        }
+
+        footer a {
+            color: var(--neon-green);
+        }
+
+        /* Blinking cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background: var(--neon-green);
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Terminal prompt in footer */
+        .terminal-prompt {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: var(--neon-green);
+        }
+
+        .terminal-prompt::before {
+            content: '> ';
+        }
+
+        /* Random transmission warning */
+        .transmission {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.65em;
+            color: var(--text-color);
+            opacity: 0;
+            letter-spacing: 1px;
+            animation: transmissionFade 30s infinite;
+            z-index: 100;
+        }
+
+        @keyframes transmissionFade {
+            0%, 85%, 100% { opacity: 0; }
+            90%, 95% { opacity: 0.4; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            article {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .site-title {
+                font-size: 1.2em;
+            }
+
+            .warning-beacon, .transmission {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background sigils -->
+    <div class="sigil-bg">
+        <div class="sigil">◎</div>
+        <div class="sigil">⍟</div>
+        <div class="sigil">⎔</div>
+    </div>
+
+    <!-- Warning beacon -->
+    <div class="warning-beacon">HYPERSTITION ACTIVE</div>
+
+    <!-- Hidden transmission -->
+    <div class="transmission">INCOMING SIGNAL // SOURCE: UNKNOWN // DECODING...</div>
+
+    <div class="container">
+        <header>
+            <a href="/ccru/" class="site-title">CCRU_NOTES</a>
+            <nav>
+                <a href="/">HOME</a>
+                <a href="/ccru/">INDEX</a>
+                <a href="/blog.html">BLOG</a>
+            </nav>
+        </header>
+
+        <article>
+            <!-- Data corruption fragments -->
+            <div class="corruption corruption-1">0x4E554D4F4752414D::ERR</div>
+            <div class="corruption corruption-2">LEMUR://SIGNAL.LOST</div>
+
+            <div class="post-meta">
+                {% if page.week %}<span class="week-num">WEEK {{ page.week }}</span>{% endif %}
+                <span>{{ page.date | date: "%Y.%m.%d" }}</span>
+            </div>
+
+            <h1>{{ page.title }}</h1>
+
+            <div class="content">{{ content }}</div>
+
+            {% if page.tags %}
+            <div class="post-tags">
+                {% for tag in page.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </article>
+
+        <footer>
+            <p>[ <a href="/">CASEY TONKIN</a> ] // CCRU Course Notes // MSCP 2026</p>
+            <div class="terminal-prompt">END TRANSMISSION<span class="cursor"></span></div>
+        </footer>
+    </div>
+
+    <script>
+        // Random glitch effect on text
+        function glitchText(element) {
+            const original = element.textContent;
+            const chars = '⌀⌁⌂⌃⌄⌅⌆⌇⌈⌉⌊⌋⌌⌍⌎⌏⍟◎⎔';
+            let iterations = 0;
+
+            const interval = setInterval(() => {
+                element.textContent = original
+                    .split('')
+                    .map((char, i) => {
+                        if (i < iterations) return original[i];
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join('');
+
+                iterations += 1/2;
+                if (iterations > original.length) {
+                    clearInterval(interval);
+                    element.textContent = original;
+                }
+            }, 40);
+        }
+
+        // Apply glitch to h2 on hover
+        document.querySelectorAll('h2').forEach(h2 => {
+            h2.addEventListener('mouseenter', () => glitchText(h2));
+        });
+
+        // Random corruption flash
+        setInterval(() => {
+            if (Math.random() > 0.95) {
+                document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 50);
+            }
+        }, 3000);
+
+        // Occasional screen tear
+        setInterval(() => {
+            if (Math.random() > 0.98) {
+                const tear = document.createElement('div');
+                tear.style.cssText = `
+                    position: fixed;
+                    top: ${Math.random() * 100}%;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: rgba(0, 255, 0, 0.4);
+                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+                    z-index: 10000;
+                    pointer-events: none;
+                `;
+                document.body.appendChild(tear);
+                setTimeout(() => tear.remove(), 100);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

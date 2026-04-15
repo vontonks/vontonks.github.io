@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: vonlayout
 title: "Whatever, man"
 date: 2022-06-01
 author: Casey Tonkin

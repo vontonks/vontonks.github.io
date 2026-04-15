@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: vonlayout
 title:  "Twitter bot 2"
 date:   2021-06-30 15:55:00 +1000
 categories: [blog, twitter-bot]

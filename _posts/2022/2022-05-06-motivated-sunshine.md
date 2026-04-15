@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: vonlayout
 title: "Motivated Sunshine"
 date: 2022-05-06
 categories: "blog"
